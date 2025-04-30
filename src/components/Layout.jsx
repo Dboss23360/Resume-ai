@@ -2,15 +2,14 @@ function Layout({ children }) {
     return (
         <div
             style={{
-                padding: '40px 20px',
-                fontFamily: 'Arial',
-                maxWidth: '800px',
-                margin: '0 auto',
+                fontFamily: 'Arial, sans-serif',
                 minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center', // 🟢 center children
-                textAlign: 'center'   // 🟢 center text content
+                justifyContent: 'center',   // ✅ vertical centering
+                alignItems: 'center',       // ✅ horizontal centering
+                textAlign: 'center',        // ✅ text alignment
+                padding: '40px 20px',
             }}
         >
             {children}
