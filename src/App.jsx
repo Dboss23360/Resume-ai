@@ -13,8 +13,13 @@ function App() {
                 <Route path="/refine" element={<RefineResume />} />
                 <Route path="/chat" element={<Chat />} />
             </Routes>
+
+            <footer style={{ marginTop: '2rem', textAlign: 'center', fontSize: '14px', color: '#888' }}>
+                © {new Date().getFullYear()} MyResumePilot
+            </footer>
         </Router>
     );
 }
+
 
 export default App;
