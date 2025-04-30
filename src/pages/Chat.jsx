@@ -18,7 +18,7 @@ function Chat() {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3001/api/refine', {
+            const response = await fetch('https://resume-server-r9po.onrender.com/api/refine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
