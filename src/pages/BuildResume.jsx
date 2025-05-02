@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 function BuildResume() {
-    const [jobDescription, setJobDescription] = useState('');
+    const [jobTitle, setJobTitle] = useState('');
+    const [education, setEducation] = useState('');
+    const [gpa, setGpa] = useState('');
     const [skills, setSkills] = useState('');
     const [experience, setExperience] = useState('');
+    const [jobDescription, setJobDescription] = useState('');
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -30,7 +33,7 @@ function BuildResume() {
                         },
                         {
                             role: 'user',
-                            content: `Write a resume and cover letter for this job:\nJob Description: ${jobDescription}\nSkills: ${skills}\nExperience: ${experience}`
+                            content: `Write a resume and cover letter for this job:\nJob Title: ${jobTitle}\nEducation: ${education}\nGPA: ${gpa}\nSkills: ${skills}\nExperience: ${experience}\nJob Description: ${jobDescription}`
                         }
                     ]
                 })
@@ -79,13 +82,30 @@ function BuildResume() {
 
             <h1>Create Your Custom Resume</h1>
 
-            <textarea
-                placeholder="Paste job description here..."
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
-                rows={6}
-                cols={60}
-                style={{ resize: 'vertical' }}
+            <input
+                type="text"
+                placeholder="Enter job title"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                style={{ width: 400 }}
+            />
+            <br /><br />
+
+            <input
+                type="text"
+                placeholder="Enter education"
+                value={education}
+                onChange={(e) => setEducation(e.target.value)}
+                style={{ width: 400 }}
+            />
+            <br /><br />
+
+            <input
+                type="text"
+                placeholder="Enter GPA"
+                value={gpa}
+                onChange={(e) => setGpa(e.target.value)}
+                style={{ width: 400 }}
             />
             <br /><br />
 
@@ -104,6 +124,16 @@ function BuildResume() {
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 style={{ width: 400 }}
+            />
+            <br /><br />
+
+            <textarea
+                placeholder="Paste job description here..."
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+                rows={6}
+                cols={60}
+                style={{ resize: 'vertical' }}
             />
             <br /><br />
 
