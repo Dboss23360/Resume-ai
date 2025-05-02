@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
@@ -10,6 +10,9 @@ function BuildResume() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        document.title = 'Build Resume – MyEzJobs';
+    }, []);
 
     const generateResume = async () => {
         setLoading(true);
@@ -33,7 +36,6 @@ function BuildResume() {
                 })
             });
 
-
             const data = await response.json();
             if (data.error) {
                 console.error('OpenAI Error:', data.error.message);
@@ -52,9 +54,10 @@ function BuildResume() {
         const element = document.createElement('a');
         const file = new Blob([result], { type: 'text/plain' });
         element.href = URL.createObjectURL(file);
-        element.download = 'resume.txt';
+        element.download = 'myezjobs_resume.txt';
         document.body.appendChild(element);
         element.click();
+        document.body.removeChild(element);
     };
 
     return (
@@ -74,7 +77,7 @@ function BuildResume() {
                 ⬅ Back to Home
             </button>
 
-            <h1>Build Resume</h1>
+            <h1>Create Your Custom Resume</h1>
 
             <textarea
                 placeholder="Paste job description here..."
@@ -82,6 +85,7 @@ function BuildResume() {
                 onChange={(e) => setJobDescription(e.target.value)}
                 rows={6}
                 cols={60}
+                style={{ resize: 'vertical' }}
             />
             <br /><br />
 
@@ -103,17 +107,38 @@ function BuildResume() {
             />
             <br /><br />
 
-            <button onClick={generateResume} disabled={loading}>
+            <button
+                onClick={generateResume}
+                disabled={loading}
+                style={{
+                    backgroundColor: '#4a56a6',
+                    color: 'white',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '6px',
+                    cursor: loading ? 'not-allowed' : 'pointer'
+                }}
+            >
                 {loading ? 'Generating...' : 'Generate Resume'}
             </button>
 
             {result && (
-                <div style={{ marginTop: 30, whiteSpace: 'pre-wrap', maxWidth: 700 }}>
-                    <button onClick={downloadText} style={{ marginBottom: 20 }}>
+                <div style={{ marginTop: 30, whiteSpace: 'pre-wrap', maxWidth: 700, textAlign: 'left' }}>
+                    <button
+                        onClick={downloadText}
+                        style={{
+                            marginBottom: 20,
+                            backgroundColor: '#4a56a6',
+                            color: 'white',
+                            border: 'none',
+                            padding: '8px 16px',
+                            borderRadius: '6px',
+                            cursor: 'pointer'
+                        }}
+                    >
                         Download as .txt
                     </button>
-                    <br />
-                    {result}
+                    <pre>{result}</pre>
                 </div>
             )}
         </Layout>

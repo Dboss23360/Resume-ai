@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
@@ -8,6 +8,9 @@ function Chat() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        document.title = 'Chat – MyEzJobs';
+    }, []);
 
     const sendMessage = async () => {
         if (!userInput.trim()) return;
@@ -25,7 +28,10 @@ function Chat() {
                 },
                 body: JSON.stringify({
                     messages: [
-                        { role: 'system', content: 'You are a friendly career coach helping users with resumes, job hunting, and interview advice.' },
+                        {
+                            role: 'system',
+                            content: 'You are a friendly AI career coach helping users with resumes, job hunting, and interview prep.'
+                        },
                         ...newMessages.map(m => ({
                             role: m.sender === 'user' ? 'user' : 'assistant',
                             content: m.text
@@ -34,15 +40,9 @@ function Chat() {
                 })
             });
 
-
             const data = await response.json();
-            if (data.error) {
-                console.error('OpenAI Error:', data.error.message);
-                setMessages(prev => [...prev, { sender: 'ai', text: `Error: ${data.error.message}` }]);
-            } else {
-                const aiReply = data.choices?.[0]?.message?.content || 'No response.';
-                setMessages(prev => [...prev, { sender: 'ai', text: aiReply }]);
-            }
+            const aiReply = data.choices?.[0]?.message?.content || 'No response.';
+            setMessages(prev => [...prev, { sender: 'ai', text: aiReply }]);
         } catch (err) {
             console.error('Fetch Error:', err);
             setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
@@ -145,7 +145,7 @@ function Chat() {
                     backgroundColor: '#4a56a6',
                     color: 'white',
                     border: 'none',
-                    cursor: 'pointer'
+                    cursor: loading ? 'not-allowed' : 'pointer'
                 }}
             >
                 {loading ? 'Sending...' : 'Send'}

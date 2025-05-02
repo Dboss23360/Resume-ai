@@ -17,7 +17,7 @@ function Layout({ children }) {
             {children}
 
             <footer style={{ marginTop: 'auto', fontSize: '14px', color: '#888' }}>
-                © {new Date().getFullYear()} MyResumePilot
+                © {new Date().getFullYear()} MyEzJobs
             </footer>
         </div>
     );

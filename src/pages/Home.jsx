@@ -5,7 +5,7 @@ import './Home.css';
 function Home() {
     return (
         <Layout>
-            <h1 className="home-title">Welcome to AI Resume Builder</h1>
+            <h1 className="home-title">Welcome to MyEzJobs!</h1>
             <p className="home-subtitle">What would you like to do?</p>
             <div className="button-group">
                 <a href="/build" className="home-button">

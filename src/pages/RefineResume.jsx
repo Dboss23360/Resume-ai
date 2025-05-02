@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import Worker from 'pdfjs-dist/legacy/build/pdf.worker?worker';
 
-// ✅ Set up PDF.js worker
+// Setup PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerPort = new Worker();
 
 function RefineResume() {
@@ -13,6 +13,10 @@ function RefineResume() {
     const [loading, setLoading] = useState(false);
     const [dropMessage, setDropMessage] = useState('Drop your resume file here (PDF, TXT) or paste it below');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = 'Refine Resume – MyEzJobs';
+    }, []);
 
     const refineResume = async () => {
         setLoading(true);
