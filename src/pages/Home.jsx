@@ -1,48 +1,25 @@
-import { FaTools, FaEdit, FaComments, FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import './Home.css';
 
 function Home() {
     return (
-        <div>
+        <>
             <Navbar />
-
-            <main className="hero">
-                <h1 className="home-title">Build Resumes.<br />Land Jobs.<br />The Easy Way</h1>
-                <p className="home-subtitle">
-                    AI-powered tools to build resumes, find jobs, and get hired faster.
+            <main className="hero-container">
+                <h2 className="hero-tagline">Build Resumes. Land Jobs. The Easy Way.</h2>
+                <h1 className="hero-title">From “Send” to “You’re Hired”</h1>
+                <p className="hero-subtext">
+                    Build the perfect resume, explore job and internship openings, and land the opportunity that fits you best.
                 </p>
-
-                <div className="button-group">
-                    <Link to="/build" className="home-button">
-                        <FaTools style={{ marginRight: '8px' }} />
-                        Build Resume
-                    </Link>
-                    <Link to="/refine" className="home-button">
-                        <FaEdit style={{ marginRight: '8px' }} />
-                        Refine Resume
-                    </Link>
-                    <Link to="/jobs" className="home-button">
-                        <FaSearch style={{ marginRight: '8px' }} />
-                        Find Jobs
-                    </Link>
-                    <Link to="/chat" className="home-button">
-                        <FaComments style={{ marginRight: '8px' }} />
-                        Chat With AI
-                    </Link>
+                <div className="hero-buttons">
+                    <button className="hero-btn">Build New Resume</button>
+                    <button className="hero-btn">Upload Resume</button>
+                    <button className="hero-btn">AI Assistant</button>
+                    <button className="hero-btn">Job Board</button>
+                    <button className="hero-btn outline">Learn More</button>
                 </div>
             </main>
-
-            <footer>
-                <div className="footer-links">
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
-                    <a href="#">Contact</a>
-                </div>
-                <p>© 2025 MyEzJobs</p>
-            </footer>
-        </div>
+        </>
     );
 }
 

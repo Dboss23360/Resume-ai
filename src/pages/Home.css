@@ -1,105 +1,55 @@
-/* Background and global styles */
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #6A4BBE, #C471ED);
+.hero-container {
+    background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
     color: white;
-}
-
-/* Top navigation */
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2rem 2rem;
-    background: transparent;
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: white;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.nav-links a, .signup-btn {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.signup-btn {
-    background: rgba(255,255,255,0.2);
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* Hero section */
-.hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
     padding: 4rem 2rem;
-    text-align: center;
+    min-height: 100vh;
 }
 
-.home-title {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: white;
-}
-
-.home-subtitle {
+.hero-tagline {
+    color: #b084f9;
     font-size: 1.2rem;
-    color: #e0d7f7;
-    margin-bottom: 30px;
-    max-width: 600px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
 }
 
-/* Button group */
-.button-group {
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.hero-subtext {
+    font-size: 1.05rem;
+    max-width: 580px;
+    margin: 0 auto 3rem auto;
+    color: #d1cfe9;
+    line-height: 1.6;
+}
+
+.hero-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 400px;
-}
-
-.home-button {
-    background-color: rgba(255,255,255,0.15);
-    color: white;
-    padding: 14px 24px;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
-    transition: background-color 0.2s ease;
+    gap: 1rem;
 }
 
-.home-button:hover {
-    background-color: rgba(255,255,255,0.25);
-}
-
-/* Footer */
-footer {
-    padding: 2rem;
-    text-align: center;
-    font-size: 0.9rem;
+.hero-btn {
+    background: transparent;
+    border: 1.5px solid #a582f7;
     color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-.footer-links a {
-    margin: 0 1rem;
-    color: white;
-    text-decoration: none;
+.hero-btn:hover {
+    background-color: #a582f733;
+}
+
+.hero-btn.outline {
+    border-color: white;
 }
