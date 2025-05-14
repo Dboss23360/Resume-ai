@@ -8,8 +8,7 @@ body {
     #0A0A0A 28%,
     #130C2A 45%,
     #2B1A5F 70%,
-    #3A2A80 100%
-    );
+    #3A2A80 100%);
     color: white;
 }
 
@@ -18,12 +17,12 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center; /* center on all screens */
+    align-items: flex-start; /* default desktop */
     min-height: 100vh;
     padding: 5rem 2rem 3rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
     padding-top: 4rem;
 }
 
@@ -50,13 +49,12 @@ body {
     margin-bottom: 3rem;
 }
 
-/* === Button Layout === */
+/* Buttons default: row on desktop */
 .hero-buttons {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
-    width: 100%;
+    align-items: flex-start;
 }
 
 /* Individual Buttons */
@@ -71,8 +69,6 @@ body {
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.2s ease, transform 0.2s ease;
-    width: 100%;
-    max-width: 280px;
     text-align: center;
 }
 
@@ -83,4 +79,23 @@ body {
 
 .hero-btn.outline {
     border-color: white;
+}
+
+/* === Mobile Only Overrides === */
+@media (max-width: 768px) {
+    .hero-container {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .hero-btn {
+        width: 100%;
+        max-width: 280px;
+    }
 }
