@@ -28,7 +28,7 @@
     flex-direction: column;
     gap: 1.25rem;
     scroll-behavior: smooth;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 0 0 1px #ffffff;
 }
 
 .chat-message {
@@ -69,7 +69,7 @@
     align-items: center;
     padding: 0.8rem 1.25rem;
     gap: 0.8rem;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 0 0 1px #ffffff;
 }
 
 .chat-input-area textarea {
