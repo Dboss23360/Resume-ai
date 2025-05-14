@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 function Chat() {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = 'Chat – MyEzJobs';
@@ -24,7 +22,7 @@ function Chat() {
             const response = await fetch('https://resume-server-r9po.onrender.com/api/refine', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     messages: [
@@ -37,14 +35,13 @@ function Chat() {
                             content: m.text
                         }))
                     ]
-                })
+                }),
             });
 
             const data = await response.json();
             const aiReply = data.choices?.[0]?.message?.content || 'No response.';
             setMessages(prev => [...prev, { sender: 'ai', text: aiReply }]);
         } catch (err) {
-            console.error('Fetch Error:', err);
             setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
         }
 
@@ -60,34 +57,19 @@ function Chat() {
 
     return (
         <Layout>
-            <button
-                onClick={() => navigate('/')}
-                style={{
-                    backgroundColor: '#4a56a6',
-                    color: 'white',
-                    border: 'none',
-                    padding: '10px 20px',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    marginBottom: '20px',
-                }}
-            >
-                ⬅ Back to Home
-            </button>
-
-            <h1>Chat with Career Assistant AI</h1>
+            <h1 style={{ fontSize: '2.2rem', marginBottom: '1.5rem' }}>Chat with Career Assistant AI</h1>
 
             <div
                 style={{
-                    border: '1px solid #ccc',
+                    backgroundColor: '#1b1b1d',
+                    border: '1px solid #333',
                     padding: 20,
-                    height: 400,
+                    height: 420,
                     width: '100%',
-                    maxWidth: 600,
+                    maxWidth: 700,
                     overflowY: 'auto',
                     marginBottom: 20,
-                    backgroundColor: '#fff',
-                    borderRadius: 8,
+                    borderRadius: 12,
                 }}
             >
                 {messages.map((msg, index) => (
@@ -96,15 +78,15 @@ function Chat() {
                         style={{
                             display: 'flex',
                             justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                            margin: '8px 0',
+                            marginBottom: 10,
                         }}
                     >
                         <div
                             style={{
-                                backgroundColor: msg.sender === 'user' ? '#4a56a6' : '#f1f1f1',
-                                color: msg.sender === 'user' ? '#fff' : '#000',
+                                backgroundColor: msg.sender === 'user' ? '#a084dc' : '#302b63',
+                                color: '#fff',
                                 padding: '10px 14px',
-                                borderRadius: '16px',
+                                borderRadius: '18px',
                                 maxWidth: '80%',
                                 whiteSpace: 'pre-wrap',
                                 wordWrap: 'break-word',
@@ -117,20 +99,22 @@ function Chat() {
             </div>
 
             <textarea
-                placeholder="Ask anything about resumes, careers, interviews..."
+                placeholder="Ask anything about resumes, careers, or interviews..."
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 rows={3}
                 style={{
                     width: '100%',
-                    maxWidth: 600,
-                    padding: 10,
+                    maxWidth: 700,
+                    padding: 12,
                     fontSize: '1rem',
-                    borderRadius: 6,
-                    border: '1px solid #ccc',
+                    borderRadius: 10,
+                    border: '1.5px solid #555',
+                    backgroundColor: '#0f0f11',
+                    color: '#fff',
                     resize: 'none',
-                    marginBottom: 10
+                    marginBottom: 14,
                 }}
             />
             <br />
@@ -139,13 +123,14 @@ function Chat() {
                 onClick={sendMessage}
                 disabled={loading}
                 style={{
-                    padding: '10px 20px',
+                    padding: '12px 24px',
                     fontSize: '1rem',
-                    borderRadius: 6,
-                    backgroundColor: '#4a56a6',
+                    borderRadius: 30,
+                    backgroundColor: '#a084dc',
                     color: 'white',
                     border: 'none',
-                    cursor: loading ? 'not-allowed' : 'pointer'
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    transition: 'background-color 0.2s ease',
                 }}
             >
                 {loading ? 'Sending...' : 'Send'}
