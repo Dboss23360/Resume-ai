@@ -1,7 +1,7 @@
 import Navbar from './Navbar';
-import './Layout.css'; // 👈 we'll add styles here
+import './Layout.css';
 
-function Layout({ children }) {
+function Layout({ children, fullScreen = false }) {
     return (
         <div
             style={{
@@ -15,9 +15,13 @@ function Layout({ children }) {
         >
             <Navbar />
 
-            <main className="responsive-wrapper">
-                {children}
-            </main>
+            {fullScreen ? (
+                children
+            ) : (
+                <main className="responsive-wrapper">
+                    {children}
+                </main>
+            )}
 
             <footer
                 style={{

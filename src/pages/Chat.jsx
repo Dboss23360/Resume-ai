@@ -58,7 +58,7 @@ function Chat() {
     };
 
     return (
-        <Layout>
+        <Layout fullScreen>
             <div className="chat-page">
                 <h1>Chat With Career Assistant AI</h1>
 
