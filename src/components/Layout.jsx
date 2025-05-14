@@ -12,12 +12,9 @@ function Layout({ children }) {
                 color: 'white',
             }}
         >
-            {/* Just the logo, not full nav */}
-            <div className="navbar-logo-only">
-                <Navbar />
-            </div>
+            {/* Navbar handles its own logic (full vs. minimal) */}
+            <Navbar />
 
-            {/* Main content container */}
             <main
                 style={{
                     flex: 1,
@@ -31,7 +28,6 @@ function Layout({ children }) {
                 {children}
             </main>
 
-            {/* Footer */}
             <footer
                 style={{
                     textAlign: 'center',
