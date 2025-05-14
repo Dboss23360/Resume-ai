@@ -118,7 +118,7 @@
         gap: 5px;
         cursor: pointer;
         padding: 0.25rem;
-        margin-right: 8px; /* ← shift left */
+        margin-right: 12px; /* ← shift left */
         box-sizing: border-box;
     }
 
