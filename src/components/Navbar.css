@@ -6,16 +6,16 @@
     padding: 1.2rem 1.5rem;
     width: 100%;
     background: transparent;
-    position: relative; /* For dropdown positioning */
+    position: relative;
     z-index: 10;
 }
 
-/* Internal pages (logo only) */
+/* Internal pages: flex-start on desktop only */
 .top-nav.logo-only {
     justify-content: flex-start;
 }
 
-/* === Logo === */
+/* Logo */
 .logo-link {
     display: flex;
     align-items: center;
@@ -39,7 +39,7 @@
     color: white;
 }
 
-/* === Desktop Nav === */
+/* Desktop Nav */
 .desktop-nav {
     display: flex;
     align-items: center;
@@ -100,7 +100,12 @@
 @media (max-width: 768px) {
     .top-nav {
         flex-direction: row;
-        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+    }
+
+    /* Fix for internal pages */
+    .top-nav.logo-only {
         justify-content: space-between;
         padding: 1rem 1.25rem;
     }
@@ -135,7 +140,7 @@
         position: absolute;
         top: 100%;
         left: 0;
-        width: 100vw; /* Full viewport width */
+        width: 100vw;
         max-width: 100%;
         box-sizing: border-box;
         z-index: 1000;
@@ -156,7 +161,7 @@
     }
 }
 
-/* === Desktop Only === */
+/* Desktop Only */
 @media (min-width: 769px) {
     .hamburger {
         display: none;
@@ -167,7 +172,7 @@
     }
 }
 
-/* === Animation === */
+/* Dropdown Animation */
 @keyframes dropdown {
     from {
         opacity: 0;
