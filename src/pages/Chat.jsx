@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import './Chat.css';
 
 function Chat() {
     const [messages, setMessages] = useState([]);
@@ -21,9 +22,7 @@ function Chat() {
         try {
             const response = await fetch('https://resume-server-r9po.onrender.com/api/refine', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [
                         {
@@ -57,84 +56,34 @@ function Chat() {
 
     return (
         <Layout>
-            <h1 style={{ fontSize: '2.2rem', marginBottom: '1.5rem' }}>Chat with Career Assistant AI</h1>
+            <div className="chat-page">
+                <h1>Chat With Career Assistant AI</h1>
 
-            <div
-                style={{
-                    backgroundColor: '#1b1b1d',
-                    border: '1px solid #333',
-                    padding: 20,
-                    height: 420,
-                    width: '100%',
-                    maxWidth: 700,
-                    overflowY: 'auto',
-                    marginBottom: 20,
-                    borderRadius: 12,
-                }}
-            >
-                {messages.map((msg, index) => (
-                    <div
-                        key={index}
-                        style={{
-                            display: 'flex',
-                            justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                            marginBottom: 10,
-                        }}
-                    >
+                <div className="chat-box">
+                    {messages.map((msg, index) => (
                         <div
-                            style={{
-                                backgroundColor: msg.sender === 'user' ? '#a084dc' : '#302b63',
-                                color: '#fff',
-                                padding: '10px 14px',
-                                borderRadius: '18px',
-                                maxWidth: '80%',
-                                whiteSpace: 'pre-wrap',
-                                wordWrap: 'break-word',
-                            }}
+                            key={index}
+                            className={`chat-message ${msg.sender === 'user' ? 'user' : 'ai'}`}
                         >
-                            {msg.text}
+                            <div className="chat-bubble">{msg.text}</div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+
+                <div className="chat-input-area">
+                    <span className="icon">🖼️</span>
+                    <textarea
+                        placeholder="Ask anything about resumes, careers, or interviews"
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        rows={2}
+                    />
+                    <button onClick={sendMessage} disabled={loading}>
+                        {loading ? '...' : '➤'}
+                    </button>
+                </div>
             </div>
-
-            <textarea
-                placeholder="Ask anything about resumes, careers, or interviews..."
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                rows={3}
-                style={{
-                    width: '100%',
-                    maxWidth: 700,
-                    padding: 12,
-                    fontSize: '1rem',
-                    borderRadius: 10,
-                    border: '1.5px solid #555',
-                    backgroundColor: '#0f0f11',
-                    color: '#fff',
-                    resize: 'none',
-                    marginBottom: 14,
-                }}
-            />
-            <br />
-
-            <button
-                onClick={sendMessage}
-                disabled={loading}
-                style={{
-                    padding: '12px 24px',
-                    fontSize: '1rem',
-                    borderRadius: 30,
-                    backgroundColor: '#a084dc',
-                    color: 'white',
-                    border: 'none',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    transition: 'background-color 0.2s ease',
-                }}
-            >
-                {loading ? 'Sending...' : 'Send'}
-            </button>
         </Layout>
     );
 }
