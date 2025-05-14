@@ -5,6 +5,8 @@
     justify-content: space-between;
     padding: 1.2rem 1.5rem;
     width: 100%;
+    max-width: 100%; /* prevents overflow */
+    box-sizing: border-box; /* includes padding in width */
     background: transparent;
     position: relative;
     z-index: 10;
