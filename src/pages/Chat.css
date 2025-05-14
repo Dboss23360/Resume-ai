@@ -134,13 +134,16 @@
     transition: opacity 0.2s ease;
 }
 
+
 .icon-btn:hover .chat-icon {
     opacity: 1;
 }
 
 .image-icon {
-    width: 32px;
-    height: 32px;
+    width: 100%;
+    height: 100%;
+    max-width: 28px;
+    max-height: 28px;
     object-fit: contain;
     opacity: 0.85;
     transition: opacity 0.2s ease;
