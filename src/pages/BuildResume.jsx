@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import jsPDF from 'jspdf';
+import './BuildResume.css';
 
 function BuildResume() {
     const [jobTitle, setJobTitle] = useState('');
@@ -12,8 +13,7 @@ function BuildResume() {
     const [jobDescription, setJobDescription] = useState('');
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-
+    useNavigate();
     useEffect(() => {
         document.title = 'Build Resume – MyEzJobs';
     }, []);
@@ -49,11 +49,7 @@ function BuildResume() {
             });
 
             const data = await response.json();
-            if (data.error) {
-                setResult('Error: ' + data.error.message);
-            } else {
-                setResult(data.choices?.[0]?.message?.content || 'Failed to generate response.');
-            }
+            setResult(data.choices?.[0]?.message?.content || 'Failed to generate response.');
         } catch (err) {
             setResult('Something went wrong: ' + err.message);
         }
@@ -61,13 +57,13 @@ function BuildResume() {
     };
 
     const downloadText = () => {
-        const element = document.createElement('a');
-        const file = new Blob([result], { type: 'text/plain' });
-        element.href = URL.createObjectURL(file);
-        element.download = 'myezjobs_resume.txt';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+        const blob = new Blob([result], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'myezjobs_resume.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     const downloadPdf = () => {
@@ -79,56 +75,54 @@ function BuildResume() {
 
     return (
         <Layout>
-            <button onClick={() => navigate('/')} style={{ backgroundColor: '#4a56a6', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', marginBottom: 20 }}>
-                ← Back to Home
-            </button>
+            <div className="resume-container">
+                <h1 className="resume-title">Create Your Custom Resume</h1>
 
-            <h1>Create Your Custom Resume</h1>
-
-            <input type="text" placeholder="Enter job title" value={jobTitle} onChange={e => setJobTitle(e.target.value)} style={{ width: 400, marginBottom: 10 }} /><br />
-            {educationList.map((edu, i) => (
-                <input
-                    key={i}
-                    type="text"
-                    placeholder={`Education #${i + 1}`}
-                    value={edu}
-                    onChange={e => handleEducationChange(i, e.target.value)}
-                    style={{ width: 400, marginBottom: 8 }}
-                />
-            ))}
-            <button onClick={addEducationField} style={{ marginBottom: 20, backgroundColor: '#eee', padding: '6px 12px', borderRadius: 4 }}>+ Add Education</button><br />
-
-            <input type="text" placeholder="Enter GPA" value={gpa} onChange={e => setGpa(e.target.value)} style={{ width: 400, marginBottom: 10 }} /><br />
-            <input type="text" placeholder="Enter your skills" value={skills} onChange={e => setSkills(e.target.value)} style={{ width: 400, marginBottom: 10 }} /><br />
-            <input type="text" placeholder="Enter job experience" value={experience} onChange={e => setExperience(e.target.value)} style={{ width: 400, marginBottom: 10 }} /><br />
-
-            <textarea
-                placeholder="Paste job description here..."
-                value={jobDescription}
-                onChange={e => setJobDescription(e.target.value)}
-                rows={6}
-                style={{ width: '100%', maxWidth: 700, resize: 'vertical', marginBottom: 20 }}
-            /><br />
-
-            <button
-                onClick={generateResume}
-                disabled={loading}
-                style={{ backgroundColor: '#4a56a6', color: 'white', padding: '10px 20px', borderRadius: '6px', border: 'none', cursor: loading ? 'not-allowed' : 'pointer' }}
-            >
-                {loading ? 'Generating...' : 'Generate Resume'}
-            </button>
-
-            {result && (
-                <div style={{ marginTop: 30, maxWidth: 700, textAlign: 'left', whiteSpace: 'pre-wrap' }}>
-                    <button onClick={downloadText} style={{ marginRight: 10, backgroundColor: '#4a56a6', color: 'white', padding: '8px 16px', borderRadius: '6px', border: 'none' }}>
-                        Download as .txt
-                    </button>
-                    <button onClick={downloadPdf} style={{ backgroundColor: '#4a56a6', color: 'white', padding: '8px 16px', borderRadius: '6px', border: 'none' }}>
-                        Download as .pdf
-                    </button>
-                    <pre style={{ marginTop: 20 }}>{result}</pre>
+                <div className="form-group">
+                    <input type="text" placeholder="Job Title" value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
                 </div>
-            )}
+
+                {educationList.map((edu, i) => (
+                    <div className="form-group" key={i}>
+                        <input
+                            type="text"
+                            placeholder={`Education #${i + 1}`}
+                            value={edu}
+                            onChange={e => handleEducationChange(i, e.target.value)}
+                        />
+                    </div>
+                ))}
+
+                <button onClick={addEducationField} className="add-btn">+ Add Education</button>
+
+                <div className="form-group">
+                    <input type="text" placeholder="GPA" value={gpa} onChange={e => setGpa(e.target.value)} />
+                    <input type="text" placeholder="Skills" value={skills} onChange={e => setSkills(e.target.value)} />
+                    <input type="text" placeholder="Experience" value={experience} onChange={e => setExperience(e.target.value)} />
+                </div>
+
+                <textarea
+                    placeholder="Paste job description here..."
+                    value={jobDescription}
+                    onChange={e => setJobDescription(e.target.value)}
+                    rows={5}
+                    className="textarea"
+                />
+
+                <button onClick={generateResume} className="generate-btn" disabled={loading}>
+                    {loading ? 'Generating...' : 'Generate Resume'}
+                </button>
+
+                {result && (
+                    <div className="output-section">
+                        <div className="download-buttons">
+                            <button onClick={downloadText}>Download as .txt</button>
+                            <button onClick={downloadPdf}>Download as .pdf</button>
+                        </div>
+                        <pre>{result}</pre>
+                    </div>
+                )}
+            </div>
         </Layout>
     );
 }
