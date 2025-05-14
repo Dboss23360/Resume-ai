@@ -79,7 +79,7 @@
     color: white;
     font-size: 1rem;
     resize: none;
-    padding: 4px 0 0 0;
+    padding: 0;
     margin: 0;
     line-height: 1.6em;
     display: flex;
@@ -113,9 +113,8 @@
 
 .chat-icon,
 .image-icon {
-    transform: scale(1.2);
-    width: 22px;
-    height: 22px;
+    width: 33px;
+    height: 33px;
     object-fit: contain;
     filter: brightness(1.7);
     opacity: 1;
