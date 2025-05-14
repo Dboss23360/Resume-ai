@@ -4,11 +4,11 @@ body {
     padding: 0;
     font-family: 'Inter', sans-serif;
     background: linear-gradient(90deg,
-    #0A0A0A 0%,      /* black starts */
-    #0A0A0A 28%,     /* hold black until 28% */
-    #130C2A 45%,     /* fade begins */
-    #2B1A5F 70%,     /* rich dark purple */
-    #3A2A80 100%     /* final purple */
+    #0A0A0A 0%,
+    #0A0A0A 28%,
+    #130C2A 45%,
+    #2B1A5F 70%,
+    #3A2A80 100%
     );
     color: white;
 }
@@ -18,13 +18,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center; /* center on all screens */
     min-height: 100vh;
     padding: 5rem 2rem 3rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    text-align: left;
-    padding-top: 4rem; /* Adjusted for better vertical alignment */
+    text-align: center;
+    padding-top: 4rem;
 }
 
 .hero-tagline {
@@ -50,12 +50,16 @@ body {
     margin-bottom: 3rem;
 }
 
+/* === Button Layout === */
 .hero-buttons {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
+    width: 100%;
 }
 
+/* Individual Buttons */
 .hero-btn {
     background-color: transparent;
     border: 1.5px solid #a582f7;
@@ -67,6 +71,9 @@ body {
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.2s ease, transform 0.2s ease;
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
 }
 
 .hero-btn:hover {
