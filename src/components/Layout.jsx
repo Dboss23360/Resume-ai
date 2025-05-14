@@ -1,4 +1,5 @@
 import Navbar from './Navbar';
+import './Layout.css'; // 👈 we'll add styles here
 
 function Layout({ children }) {
     return (
@@ -12,19 +13,9 @@ function Layout({ children }) {
                 color: 'white',
             }}
         >
-            {/* Navbar handles its own logic (full vs. minimal) */}
             <Navbar />
 
-            <main
-                style={{
-                    flex: 1,
-                    padding: '40px 20px',
-                    maxWidth: '960px',
-                    margin: '0 auto',
-                    boxSizing: 'border-box',
-                    width: '100%',
-                }}
-            >
+            <main className="responsive-wrapper">
                 {children}
             </main>
 

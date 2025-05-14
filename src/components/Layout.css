@@ -1,0 +1,14 @@
+/* This controls main page width on all screen sizes */
+.responsive-wrapper {
+    width: 100%;
+    max-width: 960px;
+    padding: 40px 20px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .responsive-wrapper {
+        padding: 20px 15px;
+    }
+}
