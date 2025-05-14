@@ -8,12 +8,17 @@ function Home() {
             <Navbar />
 
             <main className="hero-container">
-                <h2 className="hero-tagline">Build Resumes. Land Jobs. The Easy Way.</h2>
+                <h2 className="hero-tagline">
+                    Build Resumes. Land Jobs. The Easy Way.
+                </h2>
 
-                <h1 className="hero-title">From “Send” to “You’re Hired”</h1>
+                <h1 className="hero-title">
+                    From <span className="highlight">“Send”</span> to <span className="highlight">“You’re Hired”</span>
+                </h1>
 
                 <p className="hero-subtext">
-                    Build the perfect resume, explore job and internship openings, and land the opportunity that fits you best.
+                    Build the perfect resume, explore job and internship openings,<br />
+                    and land the opportunity that fits you best.
                 </p>
 
                 <div className="hero-buttons">
