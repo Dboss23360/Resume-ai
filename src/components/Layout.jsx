@@ -12,12 +12,16 @@ function Layout({ children }) {
                 color: 'white',
             }}
         >
-            <Navbar />
+            {/* Just the logo, not full nav */}
+            <div className="navbar-logo-only">
+                <Navbar />
+            </div>
 
+            {/* Main content container */}
             <main
                 style={{
                     flex: 1,
-                    padding: '60px 20px 40px',
+                    padding: '40px 20px',
                     maxWidth: '960px',
                     margin: '0 auto',
                     boxSizing: 'border-box',
@@ -27,6 +31,7 @@ function Layout({ children }) {
                 {children}
             </main>
 
+            {/* Footer */}
             <footer
                 style={{
                     textAlign: 'center',
