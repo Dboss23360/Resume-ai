@@ -119,7 +119,8 @@
         flex-direction: column;
         gap: 5px;
         cursor: pointer;
-        padding: 0.5rem;
+        padding: 0.25rem;
+        margin-right: -4px; /* nudge it back inside */
         box-sizing: content-box;
     }
 
