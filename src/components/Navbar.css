@@ -118,8 +118,8 @@
         gap: 5px;
         cursor: pointer;
         padding: 0.25rem;
-        margin-right: 0;         /* remove offset */
-        box-sizing: border-box;  /* safer for edge alignment */
+        margin-right: 8px; /* ← shift left */
+        box-sizing: border-box;
     }
 
     .hamburger div {
