@@ -1,15 +1,24 @@
-/* Universal Top Navbar */
+/* Top Navbar (universal wrapper) */
 .top-nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 1.4rem 3rem;
-    background: transparent;
     max-width: 1400px;
     margin: 0 auto;
+    background: transparent;
 }
 
-/* Logo Link (applies everywhere) */
+/* Modifier for internal pages (logo only) */
+.top-nav.logo-only {
+    justify-content: flex-start;
+}
+
+/* Default full navbar (homepage) */
+.top-nav:not(.logo-only) {
+    justify-content: space-between;
+}
+
+/* Logo Link */
 .logo-link {
     display: flex;
     align-items: center;
@@ -34,7 +43,7 @@
     color: white;
 }
 
-/* Full Nav Bar Links (homepage only) */
+/* Nav Links (homepage only) */
 .nav-links {
     display: flex;
     align-items: center;
@@ -53,7 +62,7 @@
     opacity: 0.75;
 }
 
-/* Login / Sign Up Buttons */
+/* Login / Sign Up buttons */
 .nav-actions {
     display: flex;
     align-items: center;
@@ -84,14 +93,4 @@
 
 .nav-btn.filled:hover {
     background-color: #e4e4e4;
-}
-
-/* Internal Pages (Logo Only) */
-.navbar-logo-only {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 1.4rem 3rem 0 3rem;
-    max-width: 1400px;
-    margin: 0 auto;
 }

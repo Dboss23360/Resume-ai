@@ -7,7 +7,7 @@ function Navbar() {
     const isHome = location.pathname === '/';
 
     return (
-        <nav className={`top-nav ${isHome ? 'home-nav' : 'minimal-nav'}`}>
+        <nav className={`top-nav ${!isHome ? 'logo-only' : ''}`}>
             <Link to="/" className="logo-link">
                 <div className="logo-area">
                     <img src={logo} alt="Logo" className="logo-icon" />
