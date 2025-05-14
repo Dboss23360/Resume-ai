@@ -3,7 +3,13 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(90deg, #0A0A0A 0%, #120B27 25%, #21114C 60%, #2F1D65 100%);
+    background: linear-gradient(90deg,
+    #0A0A0A 0%,     /* solid black at start */
+    #0A0A0A 35%,    /* keep black solid until 35% */
+    #130C2A 55%,    /* slow transition begins */
+    #2B1A5F 80%,    /* rich purple */
+    #3A2A80 100%    /* full deep purple at far right */
+    );
     color: white;
 }
 
