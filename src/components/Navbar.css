@@ -99,16 +99,14 @@
 /* === Mobile Styles === */
 @media (max-width: 768px) {
     .top-nav {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 1rem 1.25rem;
+        padding: 1rem 1rem; /* reduces total horizontal space */
     }
 
-    /* Fix for internal pages */
     .top-nav.logo-only {
         justify-content: space-between;
-        padding: 1rem 1.25rem;
+        padding: 1rem 1rem;
     }
+
 
     .desktop-nav {
         display: none;
@@ -120,8 +118,8 @@
         gap: 5px;
         cursor: pointer;
         padding: 0.25rem;
-        margin-right: -4px; /* nudge it back inside */
-        box-sizing: content-box;
+        margin-right: 0;         /* remove offset */
+        box-sizing: border-box;  /* safer for edge alignment */
     }
 
     .hamburger div {
