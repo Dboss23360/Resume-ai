@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import './Chat.css';
 
+import ImageIcon from '../assets/icons/image-icon.svg';
+import SendIcon from '../assets/icons/send-icon.svg';
+
 function Chat() {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
@@ -71,7 +74,7 @@ function Chat() {
                 </div>
 
                 <div className="chat-input-area">
-                    <span className="icon">🖼️</span>
+                    <img src={ImageIcon} alt="Upload" className="chat-icon" />
                     <textarea
                         placeholder="Ask anything about resumes, careers, or interviews"
                         value={userInput}
@@ -80,7 +83,7 @@ function Chat() {
                         rows={2}
                     />
                     <button onClick={sendMessage} disabled={loading}>
-                        {loading ? '...' : '➤'}
+                        {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
                     </button>
                 </div>
             </div>
