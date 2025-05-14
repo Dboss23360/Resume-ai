@@ -74,7 +74,9 @@ function Chat() {
                 </div>
 
                 <div className="chat-input-area">
-                    <img src={ImageIcon} alt="Upload" className="chat-icon" />
+                    <button type="button" className="icon-btn">
+                        <img src={ImageIcon} alt="Upload" className="chat-icon" />
+                    </button>
                     <textarea
                         placeholder="Ask anything about resumes, careers, or interviews"
                         value={userInput}
