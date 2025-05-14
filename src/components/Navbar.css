@@ -1,31 +1,27 @@
-/* Top Navbar (universal wrapper) */
+/* === Top Navbar === */
 .top-nav {
     display: flex;
     align-items: center;
-    padding: 1.4rem 3rem;
-    width: 100%; /* fills width */
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    width: 100%;
     background: transparent;
+    position: relative; /* For dropdown positioning */
+    z-index: 10;
 }
 
-
-/* Modifier for internal pages (logo only) */
+/* Internal pages (logo only) */
 .top-nav.logo-only {
     justify-content: flex-start;
 }
 
-/* Default full navbar (homepage) */
-.top-nav:not(.logo-only) {
-    justify-content: space-between;
-}
-
-/* Logo Link */
+/* === Logo === */
 .logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
 }
 
-/* Logo Area */
 .logo-area {
     display: flex;
     align-items: center;
@@ -43,7 +39,13 @@
     color: white;
 }
 
-/* Nav Links (homepage only) */
+/* === Desktop Nav === */
+.desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 .nav-links {
     display: flex;
     align-items: center;
@@ -62,7 +64,6 @@
     opacity: 0.75;
 }
 
-/* Login / Sign Up buttons */
 .nav-actions {
     display: flex;
     align-items: center;
@@ -95,8 +96,15 @@
     background-color: #e4e4e4;
 }
 
-/* Hide desktop nav on small screens */
+/* === Mobile Styles === */
 @media (max-width: 768px) {
+    .top-nav {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+    }
+
     .desktop-nav {
         display: none;
     }
@@ -107,6 +115,7 @@
         gap: 5px;
         cursor: pointer;
         padding: 0.5rem;
+        margin-left: auto;
     }
 
     .hamburger div {
@@ -114,14 +123,38 @@
         height: 3px;
         background-color: white;
         border-radius: 2px;
+        transition: transform 0.3s ease;
     }
 
-    .top-nav {
-        justify-content: space-between;
+    .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.85);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        animation: dropdown 0.25s ease-out forwards;
+        margin-bottom: 1rem;
+    }
+
+    .mobile-menu a {
+        color: white;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .mobile-menu .nav-btn {
+        width: 100%;
+        text-align: center;
     }
 }
 
-/* Show desktop nav on wider screens */
+/* === Desktop Only === */
 @media (min-width: 769px) {
     .hamburger {
         display: none;
@@ -129,38 +162,10 @@
 
     .desktop-nav {
         display: flex;
-        align-items: center;
-        gap: 2rem;
     }
 }
 
-.mobile-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    background-color: rgba(0, 0, 0, 0.85);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    animation: dropdown 0.25s ease-out forwards;
-}
-
-.mobile-menu a {
-    color: white;
-    font-weight: 500;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-.mobile-menu .nav-btn {
-    width: 100%;
-    text-align: center;
-}
-
-/* Animation */
+/* === Animation === */
 @keyframes dropdown {
     from {
         opacity: 0;
