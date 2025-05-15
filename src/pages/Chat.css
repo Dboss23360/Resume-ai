@@ -19,7 +19,7 @@
     max-width: 960px;
     height: 450px;
     border-radius: 16px;
-    background: linear-gradient(to right, #161618, rgba(33, 27, 75, 0.81)
+    background: linear-gradient(to right, #161618, rgba(25, 20, 56, 0.7)
     );
     padding: 1.5rem;
     overflow-y: auto;
@@ -64,7 +64,7 @@
     width: 100%;
     max-width: 960px;
     border-radius: 16px;
-    background: linear-gradient(to right, #161618, rgba(33, 27, 75, 0.81)
+    background: linear-gradient(to right, #161618, rgba(25, 20, 56, 0.7)
     );
     display: flex;
     align-items: center;
