@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import './Navbar.css';
 import logo from '../assets/logo.svg';
-import { useState } from 'react';
 
 function Navbar() {
     const location = useLocation();
@@ -9,37 +9,40 @@ function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => setMenuOpen(prev => !prev);
+    const closeMenu = () => setMenuOpen(false);
 
     return (
         <nav className={`top-nav ${!isHome ? 'logo-only' : ''}`}>
-            <Link to="/" className="logo-link">
+            {/* Logo */}
+            <Link to="/" className="logo-link" onClick={closeMenu}>
                 <div className="logo-area">
                     <img src={logo} alt="Logo" className="logo-icon" />
                     <span className="logo-text">MyEzJobs</span>
                 </div>
             </Link>
 
-            {/* Hamburger (shown on mobile only) */}
+            {/* Hamburger for mobile */}
             <div className="hamburger" onClick={toggleMenu}>
                 <div />
                 <div />
                 <div />
             </div>
 
+            {/* Mobile nav menu */}
             {menuOpen && (
                 <div className="mobile-menu">
-                    <Link to="/build" onClick={toggleMenu}>Build</Link>
-                    <Link to="/upload" onClick={toggleMenu}>Upload</Link>
-                    <Link to="/chat" onClick={toggleMenu}>AI</Link>
-                    <Link to="/jobs" onClick={toggleMenu}>Jobs</Link>
-                    <Link to="/pricing" onClick={toggleMenu}>Pricing</Link>
-                    <Link to="/contact" onClick={toggleMenu}>Contact</Link>
-                    <button className="nav-btn" onClick={toggleMenu}>Login</button>
-                    <button className="nav-btn filled" onClick={toggleMenu}>Sign Up</button>
+                    <Link to="/build" onClick={closeMenu}>Build</Link>
+                    <Link to="/upload" onClick={closeMenu}>Upload</Link>
+                    <Link to="/chat" onClick={closeMenu}>AI</Link>
+                    <Link to="/jobs" onClick={closeMenu}>Jobs</Link>
+                    <Link to="/pricing" onClick={closeMenu}>Pricing</Link>
+                    <Link to="/contact" onClick={closeMenu}>Contact</Link>
+                    <Link to="/login" onClick={closeMenu}><button className="nav-btn">Login</button></Link>
+                    <Link to="/signup" onClick={closeMenu}><button className="nav-btn filled">Sign Up</button></Link>
                 </div>
             )}
 
-            {/* Desktop nav (hidden on mobile for now) */}
+            {/* Desktop nav only on homepage */}
             {isHome && (
                 <div className="desktop-nav">
                     <div className="nav-links">
@@ -52,8 +55,8 @@ function Navbar() {
                         <Link to="/contact">Contact</Link>
                     </div>
                     <div className="nav-actions">
-                        <button className="nav-btn">Login</button>
-                        <button className="nav-btn filled">Sign Up</button>
+                        <Link to="/login"><button className="nav-btn">Login</button></Link>
+                        <Link to="/signup"><button className="nav-btn filled">Sign Up</button></Link>
                     </div>
                 </div>
             )}
