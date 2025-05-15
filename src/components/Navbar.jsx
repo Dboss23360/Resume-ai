@@ -88,8 +88,8 @@ function Navbar() {
             )}
 
             {/* Desktop nav only on homepage */}
-            {isHome && (
-                <div className="desktop-nav">
+            <div className="desktop-nav">
+                {isHome && (
                     <div className="nav-links">
                         <Link to="/">Home</Link>
                         <Link to="/build">Build</Link>
@@ -99,38 +99,38 @@ function Navbar() {
                         <Link to="/pricing">Pricing</Link>
                         <Link to="/contact">Contact</Link>
                     </div>
+                )}
 
-                    <div className="nav-actions">
-                        {!user ? (
-                            <>
-                                <Link to="/login">
-                                    <button className="nav-btn">Login</button>
-                                </Link>
-                                <Link to="/signup">
-                                    <button className="nav-btn filled">Sign Up</button>
-                                </Link>
-                            </>
-                        ) : (
-                            <div className="profile-menu" ref={profileRef}>
-                                <img
-                                    src={profileIcon}
-                                    alt="Profile"
-                                    className="profile-icon"
-                                    onClick={() => setDropdownOpen(prev => !prev)}
-                                />
-                                {dropdownOpen && (
-                                    <div className="dropdown">
-                                        <Link to="/profile" onClick={() => setDropdownOpen(false)}>
-                                            Account Settings
-                                        </Link>
-                                        <button onClick={handleLogout}>Logout</button>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
+                <div className="nav-actions">
+                    {!user ? (
+                        <>
+                            <Link to="/login">
+                                <button className="nav-btn">Login</button>
+                            </Link>
+                            <Link to="/signup">
+                                <button className="nav-btn filled">Sign Up</button>
+                            </Link>
+                        </>
+                    ) : (
+                        <div className="profile-menu" ref={profileRef}>
+                            <img
+                                src={profileIcon}
+                                alt="Profile"
+                                className="profile-icon"
+                                onClick={() => setDropdownOpen(prev => !prev)}
+                            />
+                            {dropdownOpen && (
+                                <div className="dropdown">
+                                    <Link to="/profile" onClick={() => setDropdownOpen(false)}>
+                                        Account Settings
+                                    </Link>
+                                    <button onClick={handleLogout}>Logout</button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </nav>
     );
 }
