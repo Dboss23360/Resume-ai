@@ -8,7 +8,8 @@ import {
     setDoc,
     addDoc,
     query,
-    orderBy
+    orderBy,
+    deleteDoc
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -17,6 +18,7 @@ import './Chat.css';
 
 import ImageIcon from '../assets/icons/image-icon.svg';
 import SendIcon from '../assets/icons/send-icon.svg';
+
 
 function Chat() {
     const [user, setUser] = useState(null);
@@ -98,6 +100,20 @@ function Chat() {
         if (!userInput.trim() || !user || !selectedThreadId) return;
 
         const newMessages = [...messages, { sender: 'user', text: userInput }];
+        // Rename chat if it's the first message
+        if (messages.length === 0 && user && selectedThreadId) {
+            const preview = userInput.slice(0, 40).trim() + (userInput.length > 40 ? '...' : '');
+            const threadRef = doc(db, 'chats', user.uid, 'threads', selectedThreadId);
+            await setDoc(threadRef, { title: preview }, { merge: true });
+
+            // Update sidebar state
+            setThreads(prev =>
+                prev.map(t =>
+                    t.id === selectedThreadId ? { ...t, title: preview } : t
+                )
+            );
+        }
+
         setMessages(newMessages);
         setUserInput('');
         setLoading(true);
@@ -138,6 +154,27 @@ function Chat() {
         }
     };
 
+    const deleteThread = async (threadId) => {
+        if (!user) return;
+
+        const confirmed = window.confirm('Delete this chat forever?');
+        if (!confirmed) return;
+
+        await deleteDoc(doc(db, 'chats', user.uid, 'threads', threadId));
+        setThreads(prev => prev.filter(t => t.id !== threadId));
+
+        if (selectedThreadId === threadId) {
+            const remaining = threads.filter(t => t.id !== threadId);
+            if (remaining[0]) {
+                setSelectedThreadId(remaining[0].id);
+                setMessages(remaining[0].messages || []);
+            } else {
+                setSelectedThreadId(null);
+                setMessages([]);
+            }
+        }
+    };
+
     return (
         <Layout fullScreen>
             <div className="chat-page">
@@ -158,15 +195,12 @@ function Chat() {
                             <h3>📂 Recent Chats</h3>
                             <ul>
                                 {threads.map((t) => (
-                                    <li
-                                        key={t.id}
-                                        onClick={() => selectThread(t.id)}
-                                        className={t.id === selectedThreadId ? 'active-thread' : ''}
-                                    >
-                                        {t.title || 'Untitled'}
-                                    </li>
+                                    <li key={t.id} className={t.id === selectedThreadId ? 'active-thread' : ''}>
+                                        <span onClick={() => selectThread(t.id)}>{t.title || 'Untitled'}</span>
+                                        <button onClick={() => deleteThread(t.id)} className="delete-btn" disabled={loading}>🗑</button></li>
                                 ))}
                             </ul>
+
                         </aside>
                     )}
 
