@@ -60,7 +60,7 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
-                <h1>Chat With Career Assistant AI</h1>
+                <h1>MyEzJobs AI</h1>
 
                 <div className="chat-box">
                     {messages.map((msg, index) => (

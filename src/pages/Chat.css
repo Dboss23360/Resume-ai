@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     padding: 3rem 1rem;
-    color: white;
+    color: rgba(255, 255, 255, 0.89);
 }
 
 .chat-page h1 {
@@ -19,7 +19,7 @@
     max-width: 960px;
     height: 450px;
     border-radius: 16px;
-    background: linear-gradient(to right, #161618, rgba(25, 20, 56, 0.7)
+    background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44)
     );
     padding: 1.5rem;
     overflow-y: auto;
@@ -51,20 +51,20 @@
     border-radius: 20px;
     font-size: 1rem;
     line-height: 1.5;
-    background-color: #302b63;
+    background-color: rgba(36, 32, 70, 0.94);
     color: #fff;
     word-break: break-word;
 }
 
 .chat-message.user .chat-bubble {
-    background-color: #5b4dc5;
+    background-color: rgba(49, 40, 117, 0.91);
 }
 
 .chat-input-area {
     width: 100%;
     max-width: 960px;
     border-radius: 16px;
-    background: linear-gradient(to right, #161618, rgba(25, 20, 56, 0.7)
+    background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44)
     );
     display: flex;
     align-items: center;
@@ -112,10 +112,18 @@
     opacity: 1;
 }
 
-.chat-icon,
+.chat-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(1.7);
+    opacity: 1;
+    transition: filter 0.2s ease;
+}
+
 .image-icon {
-    width: 33px;
-    height: 33px;
+    width: 37px;
+    height: 37px;
     object-fit: contain;
     filter: brightness(1.7);
     opacity: 1;
