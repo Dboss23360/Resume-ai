@@ -9,9 +9,16 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     useEffect(() => {
         document.title = 'Chat – MyEzJobs';
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const sendMessage = async () => {
@@ -78,7 +85,11 @@ function Chat() {
                         <img src={ImageIcon} alt="Upload" className="image-icon" />
                     </button>
                     <textarea
-                        placeholder="Ask anything about resumes, careers, or interviews"
+                        placeholder={
+                            isMobile
+                                ? "Need help?"
+                                : "Ask anything about resumes, careers, or interviews..."
+                        }
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
                         onKeyPress={handleKeyPress}
