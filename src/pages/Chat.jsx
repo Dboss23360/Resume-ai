@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { db } from '../firebase'; // adjust if needed
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+
 import Layout from '../components/Layout';
 import './Chat.css';
 
@@ -13,11 +16,6 @@ function Chat() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [user, setUser] = useState(null);
 
-    // Update document title
-    useEffect(() => {
-        document.title = 'Chat – MyEzJobs';
-    }, []);
-
     // Handle responsive changes
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -25,16 +23,37 @@ function Chat() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Detect Firebase auth user
+    // Update document title
+    useEffect(() => {
+        document.title = 'Chat – MyEzJobs';
+    }, []);
+
+    // Listen for auth state + load chat from Firestore
     useEffect(() => {
         const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             setUser(firebaseUser);
+
+            if (firebaseUser) {
+                const userDocRef = doc(db, 'chats', firebaseUser.uid);
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    const saved = docSnap.data();
+                    setMessages(saved.messages || []);
+                }
+            }
         });
+
         return () => unsubscribe();
     }, []);
 
-    // Handle sending messages
+    // Save messages to Firestore when changed
+    useEffect(() => {
+        if (!user) return;
+        const userDocRef = doc(db, 'chats', user.uid);
+        setDoc(userDocRef, { messages }, { merge: true });
+    }, [messages, user]);
+
     const sendMessage = async () => {
         if (!userInput.trim()) return;
 
@@ -51,21 +70,22 @@ function Chat() {
                     messages: [
                         {
                             role: 'system',
-                            content: 'You are a friendly AI career coach helping users with resumes, job hunting, and interview prep.'
+                            content:
+                                'You are a friendly AI career coach helping users with resumes, job hunting, and interview prep.',
                         },
-                        ...newMessages.map(m => ({
+                        ...newMessages.map((m) => ({
                             role: m.sender === 'user' ? 'user' : 'assistant',
-                            content: m.text
-                        }))
-                    ]
+                            content: m.text,
+                        })),
+                    ],
                 }),
             });
 
             const data = await response.json();
             const aiReply = data.choices?.[0]?.message?.content || 'No response.';
-            setMessages(prev => [...prev, { sender: 'ai', text: aiReply }]);
+            setMessages((prev) => [...prev, { sender: 'ai', text: aiReply }]);
         } catch (err) {
-            setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
+            setMessages((prev) => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
         }
 
         setLoading(false);
@@ -78,13 +98,21 @@ function Chat() {
         }
     };
 
+    const handleClearChat = async () => {
+        setMessages([]);
+        if (user) {
+            const userDocRef = doc(db, 'chats', user.uid);
+            await setDoc(userDocRef, { messages: [] }, { merge: true });
+        }
+    };
+
     return (
         <Layout fullScreen>
             <div className="chat-page">
                 {user ? (
                     <div className="chat-header-logged-in">
                         <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
-                        <button className="clear-chat-btn" onClick={() => setMessages([])}>
+                        <button className="clear-chat-btn" onClick={handleClearChat}>
                             🗑 New Chat
                         </button>
                     </div>
