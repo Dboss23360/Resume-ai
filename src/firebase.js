@@ -3,12 +3,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your Firebase config
 const firebaseConfig = {
-    apiKey: "AIzaSyBCkpZR16lF6vL4166hCWYsZmq7EGnnI",
+    apiKey: "AIzaSyBCKpZR1GzlF6vL4160hkCWYsZmq7EGnnI",
     authDomain: "myezjobs.firebaseapp.com",
     projectId: "myezjobs",
-    storageBucket: "myezjobs.appspot.com",
+    storageBucket: "myezjobs.firebasestorage.app",
     messagingSenderId: "513283961596",
-    appId: "1:513283961596:web:3f42a84714d9d6e19d79"
+    appId: "1:513283961596:web:577bfe13aa675145e19d79",
+    measurementId: "G-W874RDX1JT"
 };
 
 // Initialize Firebase
