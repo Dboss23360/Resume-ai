@@ -1,15 +1,29 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
 import './Navbar.css';
 import logo from '../assets/logo.svg';
+import profileIcon from '../assets/icons/profile.svg';
 
 function Navbar() {
     const location = useLocation();
     const isHome = location.pathname === '/';
+
+    const { user } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleMenu = () => setMenuOpen(prev => !prev);
     const closeMenu = () => setMenuOpen(false);
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        setDropdownOpen(false);
+        closeMenu();
+    };
 
     return (
         <nav className={`top-nav ${!isHome ? 'logo-only' : ''}`}>
@@ -23,9 +37,7 @@ function Navbar() {
 
             {/* Hamburger for mobile */}
             <div className="hamburger" onClick={toggleMenu}>
-                <div />
-                <div />
-                <div />
+                <div /><div /><div />
             </div>
 
             {/* Mobile nav menu */}
@@ -37,8 +49,18 @@ function Navbar() {
                     <Link to="/jobs" onClick={closeMenu}>Jobs</Link>
                     <Link to="/pricing" onClick={closeMenu}>Pricing</Link>
                     <Link to="/contact" onClick={closeMenu}>Contact</Link>
-                    <Link to="/login" onClick={closeMenu}><button className="nav-btn">Login</button></Link>
-                    <Link to="/signup" onClick={closeMenu}><button className="nav-btn filled">Sign Up</button></Link>
+
+                    {!user ? (
+                        <>
+                            <Link to="/login" onClick={closeMenu}><button className="nav-btn">Login</button></Link>
+                            <Link to="/signup" onClick={closeMenu}><button className="nav-btn filled">Sign Up</button></Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/profile" onClick={closeMenu}>Account Settings</Link>
+                            <button onClick={handleLogout} className="nav-btn">Logout</button>
+                        </>
+                    )}
                 </div>
             )}
 
@@ -54,9 +76,29 @@ function Navbar() {
                         <Link to="/pricing">Pricing</Link>
                         <Link to="/contact">Contact</Link>
                     </div>
+
                     <div className="nav-actions">
-                        <Link to="/login"><button className="nav-btn">Login</button></Link>
-                        <Link to="/signup"><button className="nav-btn filled">Sign Up</button></Link>
+                        {!user ? (
+                            <>
+                                <Link to="/login"><button className="nav-btn">Login</button></Link>
+                                <Link to="/signup"><button className="nav-btn filled">Sign Up</button></Link>
+                            </>
+                        ) : (
+                            <div className="profile-menu">
+                                <img
+                                    src={profileIcon}
+                                    alt="Profile"
+                                    className="profile-icon"
+                                    onClick={() => setDropdownOpen(prev => !prev)}
+                                />
+                                {dropdownOpen && (
+                                    <div className="dropdown">
+                                        <Link to="/profile" onClick={() => setDropdownOpen(false)}>Account Settings</Link>
+                                        <button onClick={handleLogout}>Logout</button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
