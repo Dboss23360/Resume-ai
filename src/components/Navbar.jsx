@@ -88,7 +88,6 @@ function Navbar() {
             )}
 
             {/* Desktop nav only on homepage */}
-            {isHome && (
                 <div className="desktop-nav">
                     <div className="nav-links">
                         <Link to="/">Home</Link>
@@ -130,7 +129,7 @@ function Navbar() {
                         )}
                     </div>
                 </div>
-            )}
+            
         </nav>
     );
 }
