@@ -28,6 +28,7 @@ function Navbar() {
         closeMenu();
     };
 
+    // Close menus when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -86,20 +87,18 @@ function Navbar() {
                 </div>
             )}
 
-            {/* Always show desktop nav layout */}
-            <div className="desktop-nav">
-                <div className="desktop-nav-inner">
-                    {isHome && (
-                        <div className="nav-links">
-                            <Link to="/">Home</Link>
-                            <Link to="/build">Build</Link>
-                            <Link to="/upload">Upload</Link>
-                            <Link to="/chat">AI</Link>
-                            <Link to="/jobs">Jobs</Link>
-                            <Link to="/pricing">Pricing</Link>
-                            <Link to="/contact">Contact</Link>
-                        </div>
-                    )}
+            {/* Desktop nav only on homepage */}
+            {isHome && (
+                <div className="desktop-nav">
+                    <div className="nav-links">
+                        <Link to="/">Home</Link>
+                        <Link to="/build">Build</Link>
+                        <Link to="/upload">Upload</Link>
+                        <Link to="/chat">AI</Link>
+                        <Link to="/jobs">Jobs</Link>
+                        <Link to="/pricing">Pricing</Link>
+                        <Link to="/contact">Contact</Link>
+                    </div>
 
                     <div className="nav-actions">
                         {!user ? (
@@ -131,7 +130,7 @@ function Navbar() {
                         )}
                     </div>
                 </div>
-            </div>
+            )}
         </nav>
     );
 }
