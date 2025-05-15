@@ -8,8 +8,7 @@ body {
     #0A0A0A 28%,
     #130C2A 45%,
     #2B1A5F 70%,
-    #3A2A80 100%
-    );
+    #3A2A80 100%);
     color: white;
 }
 
@@ -18,53 +17,50 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start; /* default: desktop left-align */
+    align-items: flex-start;
     min-height: 100vh;
-    padding: 5rem 2rem 3rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 7rem 4rem 4rem 10rem;
+    max-width: 1400px; /* wider max for left-alignment space */
+    margin-left: 0; /* stick left */
     text-align: left;
-    padding-top: 4rem;
 }
 
 .hero-tagline {
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: #b084f9;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.25rem;
 }
 
 .hero-title {
-    font-size: 3.75rem;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
     color: white;
 }
 
 .hero-subtext {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     color: #d1cfe9;
-    line-height: 1.7;
-    max-width: 640px;
-    margin-bottom: 3rem;
+    line-height: 2.1rem;
+    max-width: 780px;
+    margin-bottom: 4rem;
 }
 
-/* Buttons: default row on desktop */
 .hero-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: flex-start;
 }
 
-/* Button base style */
 .hero-btn {
     background-color: transparent;
-    border: 1.5px solid #a582f7;
+    border: 2px solid #a582f7;
     color: white;
-    padding: 0.85rem 1.6rem;
-    font-size: 1rem;
+    padding: 1.1rem 2.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
     border-radius: 30px;
     cursor: pointer;
@@ -87,27 +83,23 @@ body {
     .hero-container {
         align-items: center;
         text-align: center;
-        padding: 4rem 1.2rem 3rem 1.2rem;
+        padding: 4rem 1.5rem;
     }
 
     .hero-tagline {
-        font-size: 1.1rem;
-        font-weight: 700;
-        max-width: 95%;
-        margin-bottom: 1.8rem;
+        font-size: 1.25rem;
+        margin-bottom: 1.75rem;
     }
 
     .hero-title {
-        font-size: 2.5rem;
-        line-height: 1.3;
-        max-width: 95%;
-        margin-bottom: 1.5rem;
+        font-size: 3.25rem;
+        line-height: 1.2;
+        margin-bottom: 1.75rem;
     }
 
     .hero-subtext {
-        font-size: 1rem;
-        line-height: 1.6;
-        max-width: 95%;
+        font-size: 1.2rem;
+        line-height: 1.75;
         margin-bottom: 2.5rem;
     }
 
@@ -119,6 +111,8 @@ body {
 
     .hero-btn {
         width: 100%;
-        max-width: 280px;
+        max-width: 300px;
+        font-size: 1.15rem;
+        padding: 1.1rem 2rem;
     }
 }

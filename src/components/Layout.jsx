@@ -8,7 +8,7 @@ function Layout({ children, fullScreen = false }) {
                 minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
-                background: 'linear-gradient(to right, #0b0b0d, #2c1e6a)',
+                background: 'linear-gradient(90deg, #0A0A0A 0%, #0A0A0A 28%, #130C2A 45%, #2B1A5F 70%, #3A2A80 100%)',
                 fontFamily: 'Inter, sans-serif',
                 color: 'white',
             }}
