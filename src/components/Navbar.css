@@ -14,7 +14,6 @@
 
 /* Internal pages: flex-start on desktop only */
 .top-nav.logo-only {
-    justify-content: flex-start;
 }
 
 /* Logo */
