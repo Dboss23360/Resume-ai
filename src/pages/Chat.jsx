@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Layout from '../components/Layout';
 import './Chat.css';
 
@@ -10,17 +11,30 @@ function Chat() {
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [user, setUser] = useState(null);
 
+    // Update document title
     useEffect(() => {
         document.title = 'Chat – MyEzJobs';
     }, []);
 
+    // Handle responsive changes
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Detect Firebase auth user
+    useEffect(() => {
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            setUser(firebaseUser);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    // Handle sending messages
     const sendMessage = async () => {
         if (!userInput.trim()) return;
 
@@ -67,37 +81,61 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
-                <h1>MyEzJobs AI</h1>
+                {user ? (
+                    <div className="chat-header-logged-in">
+                        <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
+                        <button className="clear-chat-btn" onClick={() => setMessages([])}>
+                            🗑 New Chat
+                        </button>
+                    </div>
+                ) : (
+                    <h1>MyEzJobs AI</h1>
+                )}
 
-                <div className="chat-box">
-                    {messages.map((msg, index) => (
-                        <div
-                            key={index}
-                            className={`chat-message ${msg.sender === 'user' ? 'user' : 'ai'}`}
-                        >
-                            <div className="chat-bubble">{msg.text}</div>
+                <div className="chat-content-wrapper">
+                    {user && (
+                        <aside className="chat-history">
+                            <h3>📂 Recent Chats</h3>
+                            <ul>
+                                <li>Resume Feedback</li>
+                                <li>Interview Prep</li>
+                                <li>Job Search Tips</li>
+                            </ul>
+                        </aside>
+                    )}
+
+                    <div className="chat-main">
+                        <div className="chat-box">
+                            {messages.map((msg, index) => (
+                                <div
+                                    key={index}
+                                    className={`chat-message ${msg.sender === 'user' ? 'user' : 'ai'}`}
+                                >
+                                    <div className="chat-bubble">{msg.text}</div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
 
-                <div className="chat-input-area">
-                    <button type="button" className="icon-btn">
-                        <img src={ImageIcon} alt="Upload" className="image-icon" />
-                    </button>
-                    <textarea
-                        placeholder={
-                            isMobile
-                                ? "Need help?"
-                                : "Ask anything about resumes, careers, or interviews..."
-                        }
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        rows={2}
-                    />
-                    <button onClick={sendMessage} disabled={loading}>
-                        {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
-                    </button>
+                        <div className="chat-input-area">
+                            <button type="button" className="icon-btn">
+                                <img src={ImageIcon} alt="Upload" className="image-icon" />
+                            </button>
+                            <textarea
+                                placeholder={
+                                    isMobile
+                                        ? 'Need help?'
+                                        : 'Ask anything about resumes, careers, or interviews...'
+                                }
+                                value={userInput}
+                                onChange={(e) => setUserInput(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                rows={2}
+                            />
+                            <button onClick={sendMessage} disabled={loading}>
+                                {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </Layout>
