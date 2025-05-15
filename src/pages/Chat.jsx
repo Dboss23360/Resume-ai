@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { db } from '../firebase'; // adjust if needed
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc,
+    addDoc,
+    query,
+    orderBy
+} from 'firebase/firestore';
+import { db } from '../firebase';
 
 import Layout from '../components/Layout';
 import './Chat.css';
@@ -10,52 +19,83 @@ import ImageIcon from '../assets/icons/image-icon.svg';
 import SendIcon from '../assets/icons/send-icon.svg';
 
 function Chat() {
+    const [user, setUser] = useState(null);
+    const [threads, setThreads] = useState([]);
+    const [selectedThreadId, setSelectedThreadId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const [user, setUser] = useState(null);
 
-    // Handle responsive changes
+    useEffect(() => {
+        document.title = 'Chat – MyEzJobs';
+    }, []);
+
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Update document title
-    useEffect(() => {
-        document.title = 'Chat – MyEzJobs';
-    }, []);
-
-    // Listen for auth state + load chat from Firestore
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-            setUser(firebaseUser);
-
             if (firebaseUser) {
-                const userDocRef = doc(db, 'chats', firebaseUser.uid);
-                const docSnap = await getDoc(userDocRef);
-                if (docSnap.exists()) {
-                    const saved = docSnap.data();
-                    setMessages(saved.messages || []);
-                }
+                setUser(firebaseUser);
+                await loadThreads(firebaseUser.uid);
             }
         });
 
         return () => unsubscribe();
     }, []);
 
-    // Save messages to Firestore when changed
-    useEffect(() => {
-        if (!user) return;
-        const userDocRef = doc(db, 'chats', user.uid);
-        setDoc(userDocRef, { messages }, { merge: true });
-    }, [messages, user]);
+    const loadThreads = async (uid) => {
+        const threadsRef = collection(db, 'chats', uid, 'threads');
+        const q = query(threadsRef, orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+
+        const loaded = [];
+        snapshot.forEach(doc => loaded.push({ id: doc.id, ...doc.data() }));
+        setThreads(loaded);
+
+        if (loaded.length > 0) {
+            setSelectedThreadId(loaded[0].id);
+            setMessages(loaded[0].messages || []);
+        }
+    };
+
+    const selectThread = async (threadId) => {
+        setSelectedThreadId(threadId);
+        const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
+        const snap = await getDoc(threadRef);
+        if (snap.exists()) {
+            const data = snap.data();
+            setMessages(data.messages || []);
+        }
+    };
+
+    const createNewThread = async () => {
+        const threadsRef = collection(db, 'chats', user.uid, 'threads');
+        const newDoc = await addDoc(threadsRef, {
+            title: 'New Chat',
+            messages: [],
+            createdAt: new Date()
+        });
+
+        const newThread = {
+            id: newDoc.id,
+            title: 'New Chat',
+            messages: [],
+            createdAt: new Date()
+        };
+
+        setThreads(prev => [newThread, ...prev]);
+        setSelectedThreadId(newDoc.id);
+        setMessages([]);
+    };
 
     const sendMessage = async () => {
-        if (!userInput.trim()) return;
+        if (!userInput.trim() || !user || !selectedThreadId) return;
 
         const newMessages = [...messages, { sender: 'user', text: userInput }];
         setMessages(newMessages);
@@ -68,11 +108,7 @@ function Chat() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [
-                        {
-                            role: 'system',
-                            content:
-                                'You are a friendly AI career coach helping users with resumes, job hunting, and interview prep.',
-                        },
+                        { role: 'system', content: 'You are a friendly AI career coach...' },
                         ...newMessages.map((m) => ({
                             role: m.sender === 'user' ? 'user' : 'assistant',
                             content: m.text,
@@ -83,9 +119,13 @@ function Chat() {
 
             const data = await response.json();
             const aiReply = data.choices?.[0]?.message?.content || 'No response.';
-            setMessages((prev) => [...prev, { sender: 'ai', text: aiReply }]);
+            const updated = [...newMessages, { sender: 'ai', text: aiReply }];
+            setMessages(updated);
+
+            const threadRef = doc(db, 'chats', user.uid, 'threads', selectedThreadId);
+            await setDoc(threadRef, { messages: updated }, { merge: true });
         } catch (err) {
-            setMessages((prev) => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
+            setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
         }
 
         setLoading(false);
@@ -98,22 +138,14 @@ function Chat() {
         }
     };
 
-    const handleClearChat = async () => {
-        setMessages([]);
-        if (user) {
-            const userDocRef = doc(db, 'chats', user.uid);
-            await setDoc(userDocRef, { messages: [] }, { merge: true });
-        }
-    };
-
     return (
         <Layout fullScreen>
             <div className="chat-page">
                 {user ? (
                     <div className="chat-header-logged-in">
                         <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
-                        <button className="clear-chat-btn" onClick={handleClearChat}>
-                            🗑 New Chat
+                        <button className="clear-chat-btn" onClick={createNewThread}>
+                            ➕ New Chat
                         </button>
                     </div>
                 ) : (
@@ -125,9 +157,15 @@ function Chat() {
                         <aside className="chat-history">
                             <h3>📂 Recent Chats</h3>
                             <ul>
-                                <li>Resume Feedback</li>
-                                <li>Interview Prep</li>
-                                <li>Job Search Tips</li>
+                                {threads.map((t) => (
+                                    <li
+                                        key={t.id}
+                                        onClick={() => selectThread(t.id)}
+                                        className={t.id === selectedThreadId ? 'active-thread' : ''}
+                                    >
+                                        {t.title || 'Untitled'}
+                                    </li>
+                                ))}
                             </ul>
                         </aside>
                     )}
@@ -135,10 +173,7 @@ function Chat() {
                     <div className="chat-main">
                         <div className="chat-box">
                             {messages.map((msg, index) => (
-                                <div
-                                    key={index}
-                                    className={`chat-message ${msg.sender === 'user' ? 'user' : 'ai'}`}
-                                >
+                                <div key={index} className={`chat-message ${msg.sender}`}>
                                     <div className="chat-bubble">{msg.text}</div>
                                 </div>
                             ))}
