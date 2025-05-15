@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -16,6 +16,9 @@ function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    const profileRef = useRef(null);
+    const mobileMenuRef = useRef(null);
+
     const toggleMenu = () => setMenuOpen(prev => !prev);
     const closeMenu = () => setMenuOpen(false);
 
@@ -24,6 +27,22 @@ function Navbar() {
         setDropdownOpen(false);
         closeMenu();
     };
+
+    // Close menus when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className={`top-nav ${!isHome ? 'logo-only' : ''}`}>
@@ -42,7 +61,7 @@ function Navbar() {
 
             {/* Mobile nav menu */}
             {menuOpen && (
-                <div className="mobile-menu">
+                <div className="mobile-menu" ref={mobileMenuRef}>
                     <Link to="/build" onClick={closeMenu}>Build</Link>
                     <Link to="/upload" onClick={closeMenu}>Upload</Link>
                     <Link to="/chat" onClick={closeMenu}>AI</Link>
@@ -52,8 +71,12 @@ function Navbar() {
 
                     {!user ? (
                         <>
-                            <Link to="/login" onClick={closeMenu}><button className="nav-btn">Login</button></Link>
-                            <Link to="/signup" onClick={closeMenu}><button className="nav-btn filled">Sign Up</button></Link>
+                            <Link to="/login" onClick={closeMenu}>
+                                <button className="nav-btn">Login</button>
+                            </Link>
+                            <Link to="/signup" onClick={closeMenu}>
+                                <button className="nav-btn filled">Sign Up</button>
+                            </Link>
                         </>
                     ) : (
                         <>
@@ -80,11 +103,15 @@ function Navbar() {
                     <div className="nav-actions">
                         {!user ? (
                             <>
-                                <Link to="/login"><button className="nav-btn">Login</button></Link>
-                                <Link to="/signup"><button className="nav-btn filled">Sign Up</button></Link>
+                                <Link to="/login">
+                                    <button className="nav-btn">Login</button>
+                                </Link>
+                                <Link to="/signup">
+                                    <button className="nav-btn filled">Sign Up</button>
+                                </Link>
                             </>
                         ) : (
-                            <div className="profile-menu">
+                            <div className="profile-menu" ref={profileRef}>
                                 <img
                                     src={profileIcon}
                                     alt="Profile"
@@ -93,7 +120,9 @@ function Navbar() {
                                 />
                                 {dropdownOpen && (
                                     <div className="dropdown">
-                                        <Link to="/profile" onClick={() => setDropdownOpen(false)}>Account Settings</Link>
+                                        <Link to="/profile" onClick={() => setDropdownOpen(false)}>
+                                            Account Settings
+                                        </Link>
                                         <button onClick={handleLogout}>Logout</button>
                                     </div>
                                 )}
