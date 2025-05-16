@@ -19,8 +19,7 @@
     max-width: 960px;
     height: 450px;
     border-radius: 16px;
-    background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44)
-    );
+    background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44));
     padding: 1.5rem;
     overflow-y: auto;
     margin-bottom: 1.75rem;
@@ -50,7 +49,7 @@
     padding: 0.9rem 1.4rem;
     border-radius: 20px;
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.45;
     background-color: rgba(36, 32, 70, 0.94);
     color: #fff;
     word-break: break-word;
@@ -64,11 +63,10 @@
     width: 100%;
     max-width: 960px;
     border-radius: 16px;
-    background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44)
-    );
+    background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44));
     display: flex;
-    align-items: center;
-    padding: 0.75rem 1.1rem;
+    align-items: flex-end; /* so textarea aligns bottom */
+    padding: 0.75rem 1rem;
     gap: 0.75rem;
     box-shadow: inset 0 0 0 1px #ffffff;
 }
@@ -80,11 +78,15 @@
     outline: none;
     color: white;
     font-size: 1rem;
-    height: 42px;
-    line-height: 42px;
-    resize: none;
-    padding: 0;
+    line-height: 1.5;
+    padding: 0.4rem 0 0.5rem;
     margin: 0;
+    resize: none;
+    height: 42px;
+    min-height: 42px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: inherit;
 }
 
 .chat-input-area button,
@@ -100,6 +102,7 @@
     justify-content: center;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    align-self: flex-end;
 }
 
 .chat-input-area button:disabled {
@@ -112,18 +115,10 @@
     opacity: 1;
 }
 
-.chat-icon {
+.chat-icon,
+.image-icon {
     width: 28px;
     height: 28px;
-    object-fit: contain;
-    filter: brightness(1.7);
-    opacity: 1;
-    transition: filter 0.2s ease;
-}
-
-.image-icon {
-    width: 37px;
-    height: 37px;
     object-fit: contain;
     filter: brightness(1.7);
     opacity: 1;
@@ -191,6 +186,7 @@ textarea:focus,
 .chat-history ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .chat-history li {

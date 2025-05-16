@@ -63,8 +63,27 @@ function Chat() {
         if (loaded.length > 0) {
             setSelectedThreadId(loaded[0].id);
             setMessages(loaded[0].messages || []);
+        } else {
+            // 👇 Auto-create first thread
+            const newDoc = await addDoc(threadsRef, {
+                title: 'New Chat',
+                messages: [],
+                createdAt: new Date()
+            });
+
+            const newThread = {
+                id: newDoc.id,
+                title: 'New Chat',
+                messages: [],
+                createdAt: new Date()
+            };
+
+            setThreads([newThread]);
+            setSelectedThreadId(newDoc.id);
+            setMessages([]);
         }
     };
+
 
     const selectThread = async (threadId) => {
         setSelectedThreadId(threadId);
@@ -224,8 +243,11 @@ function Chat() {
                                         : 'Ask anything about resumes, careers, or interviews...'
                                 }
                                 value={userInput}
-                                onChange={(e) => setUserInput(e.target.value)}
-                                onKeyPress={handleKeyPress}
+                                onChange={(e) => {
+                                    setUserInput(e.target.value);
+                                    e.target.style.height = 'auto'; // reset
+                                    e.target.style.height = `${e.target.scrollHeight}px`; // grow
+                                }}                                onKeyPress={handleKeyPress}
                                 rows={2}
                             />
                             <button onClick={sendMessage} disabled={loading}>
