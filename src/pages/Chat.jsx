@@ -80,25 +80,12 @@ function Chat() {
             setSelectedThreadId(loaded[0].id);
             setMessages(loaded[0].messages || []);
         } else {
-            // 👇 Auto-create first thread
-            const newDoc = await addDoc(threadsRef, {
-                title: 'New Chat',
-                messages: [],
-                createdAt: new Date()
-            });
-
-            const newThread = {
-                id: newDoc.id,
-                title: 'New Chat',
-                messages: [],
-                createdAt: new Date()
-            };
-
-            setThreads([newThread]);
-            setSelectedThreadId(newDoc.id);
+            // ❌ REMOVE auto-creation of a blank thread
+            setSelectedThreadId(null);
             setMessages([]);
         }
     };
+
 
 
     const selectThread = async (threadId) => {
