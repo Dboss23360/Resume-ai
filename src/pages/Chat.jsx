@@ -80,7 +80,6 @@ function Chat() {
             setSelectedThreadId(loaded[0].id);
             setMessages(loaded[0].messages || []);
         } else {
-            // ❌ REMOVE auto-creation of a blank thread
             setSelectedThreadId(null);
             setMessages([]);
         }
@@ -119,26 +118,48 @@ function Chat() {
     };
 
     const sendMessage = async () => {
-        if (!userInput.trim() || !user || !selectedThreadId) return;
+        if (!userInput.trim() || !user) return;
+
+        let threadId = selectedThreadId;
+
+        // 🧠 Create a new thread if one doesn't exist yet
+        if (!threadId) {
+            const threadsRef = collection(db, 'chats', user.uid, 'threads');
+            const newDoc = await addDoc(threadsRef, {
+                title: 'New Chat',
+                messages: [],
+                createdAt: new Date()
+            });
+
+            threadId = newDoc.id;
+            setSelectedThreadId(threadId);
+
+            const newThread = {
+                id: threadId,
+                title: 'New Chat',
+                messages: [],
+                createdAt: new Date()
+            };
+            setThreads(prev => [newThread, ...prev]);
+        }
 
         const newMessages = [...messages, { sender: 'user', text: userInput }];
-        // Rename chat if it's the first message
-        if (messages.length === 0 && user && selectedThreadId) {
+
+        // Rename thread if this is the first message
+        if (messages.length === 0) {
             const preview = userInput.slice(0, 40).trim() + (userInput.length > 40 ? '...' : '');
-            const threadRef = doc(db, 'chats', user.uid, 'threads', selectedThreadId);
+            const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
             await setDoc(threadRef, { title: preview }, { merge: true });
 
-            // Update sidebar state
             setThreads(prev =>
                 prev.map(t =>
-                    t.id === selectedThreadId ? { ...t, title: preview } : t
+                    t.id === threadId ? { ...t, title: preview } : t
                 )
             );
         }
 
         setMessages(newMessages);
         setUserInput('');
-
         setLoading(true);
 
         try {
@@ -161,7 +182,7 @@ function Chat() {
             const updated = [...newMessages, { sender: 'ai', text: aiReply }];
             setMessages(updated);
 
-            const threadRef = doc(db, 'chats', user.uid, 'threads', selectedThreadId);
+            const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
             await setDoc(threadRef, { messages: updated }, { merge: true });
         } catch (err) {
             setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
@@ -169,6 +190,7 @@ function Chat() {
 
         setLoading(false);
     };
+
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
