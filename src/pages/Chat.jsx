@@ -19,6 +19,7 @@ import './Chat.css';
 import ImageIcon from '../assets/icons/image-icon.svg';
 import SendIcon from '../assets/icons/send-icon.svg';
 
+import { useRef } from 'react';
 
 function Chat() {
     const [user, setUser] = useState(null);
@@ -28,6 +29,7 @@ function Chat() {
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const textareaRef = useRef(null);
 
     useEffect(() => {
         document.title = 'Chat – MyEzJobs';
@@ -135,6 +137,9 @@ function Chat() {
 
         setMessages(newMessages);
         setUserInput('');
+        if (textareaRef.current) {
+            textareaRef.current.style.height = '42px';
+        }
         setLoading(true);
 
         try {
@@ -237,6 +242,7 @@ function Chat() {
                                 <img src={ImageIcon} alt="Upload" className="image-icon" />
                             </button>
                             <textarea
+                                ref={textareaRef}
                                 placeholder={
                                     isMobile
                                         ? 'Need help?'
@@ -244,10 +250,21 @@ function Chat() {
                                 }
                                 value={userInput}
                                 onChange={(e) => {
-                                    setUserInput(e.target.value);
-                                    e.target.style.height = 'auto'; // reset
-                                    e.target.style.height = `${e.target.scrollHeight}px`; // grow
-                                }}                                onKeyPress={handleKeyPress}
+                                    const el = e.target;
+                                    setUserInput(el.value);
+
+                                    el.style.height = 'auto';
+                                    el.style.height = el.scrollHeight + 'px';
+
+                                    if (el.scrollHeight > 160) {
+                                        el.scrollTop = el.scrollHeight;
+                                    }
+
+                                    if (el.value === '') {
+                                        el.style.height = '42px'; // reset when empty
+                                    }
+                                }}
+                                onKeyPress={handleKeyPress}
                                 rows={2}
                             />
                             <button onClick={sendMessage} disabled={loading}>
