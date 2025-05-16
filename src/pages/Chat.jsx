@@ -242,10 +242,10 @@ function Chat() {
                                 {threads.map((t) => (
                                     <li key={t.id} className={t.id === selectedThreadId ? 'active-thread' : ''}>
                                         <span onClick={() => selectThread(t.id)}>{t.title || 'Untitled'}</span>
-                                        <button onClick={() => deleteThread(t.id)} className="delete-btn" disabled={loading}>🗑</button></li>
+                                        <button onClick={() => deleteThread(t.id)} className="delete-btn" disabled={loading}>🗑</button>
+                                    </li>
                                 ))}
                             </ul>
-
                         </aside>
                     )}
 
