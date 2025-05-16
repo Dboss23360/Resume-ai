@@ -30,10 +30,24 @@ function Chat() {
     const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const textareaRef = useRef(null);
+    const scrollRef = useRef(null);
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = '42px';
+        }
+    }, []);
+
 
     useEffect(() => {
         document.title = 'Chat – MyEzJobs';
     }, []);
+
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -137,9 +151,7 @@ function Chat() {
 
         setMessages(newMessages);
         setUserInput('');
-        if (textareaRef.current) {
-            textareaRef.current.style.height = '42px';
-        }
+
         setLoading(true);
 
         try {
@@ -230,12 +242,15 @@ function Chat() {
 
                     <div className="chat-main">
                         <div className="chat-box">
-                            {messages.map((msg, index) => (
-                                <div key={index} className={`chat-message ${msg.sender}`}>
-                                    <div className="chat-bubble">{msg.text}</div>
-                                </div>
-                            ))}
+                            <div className="chat-scroll-area" ref={scrollRef}>
+                                {messages.map((msg, index) => (
+                                    <div key={index} className={`chat-message ${msg.sender}`}>
+                                        <div className="chat-bubble">{msg.text}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
+
 
                         <div className="chat-input-area">
                             <button type="button" className="icon-btn">
@@ -249,21 +264,8 @@ function Chat() {
                                         : 'Ask anything about resumes, careers, or interviews...'
                                 }
                                 value={userInput}
-                                onChange={(e) => {
-                                    const el = e.target;
-                                    setUserInput(el.value);
+                                onChange={(e) => setUserInput(e.target.value)}
 
-                                    el.style.height = 'auto';
-                                    el.style.height = el.scrollHeight + 'px';
-
-                                    if (el.scrollHeight > 160) {
-                                        el.scrollTop = el.scrollHeight;
-                                    }
-
-                                    if (el.value === '') {
-                                        el.style.height = '42px'; // reset when empty
-                                    }
-                                }}
                                 onKeyPress={handleKeyPress}
                                 rows={2}
                             />
