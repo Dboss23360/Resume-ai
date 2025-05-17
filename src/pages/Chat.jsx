@@ -118,12 +118,13 @@ function Chat() {
     };
 
     const sendMessage = async () => {
-        if (!userInput.trim() || !user) return;
+        if (!userInput.trim()) return;
 
         let threadId = selectedThreadId;
+        const newMessages = [...messages, { sender: 'user', text: userInput }];
 
-        // 🧠 Create a new thread if one doesn't exist yet
-        if (!threadId) {
+        // If user is logged in and no thread exists, create a new one
+        if (user && !threadId) {
             const threadsRef = collection(db, 'chats', user.uid, 'threads');
             const newDoc = await addDoc(threadsRef, {
                 title: 'New Chat',
@@ -143,10 +144,8 @@ function Chat() {
             setThreads(prev => [newThread, ...prev]);
         }
 
-        const newMessages = [...messages, { sender: 'user', text: userInput }];
-
         // Rename thread if this is the first message
-        if (messages.length === 0) {
+        if (user && threadId && messages.length === 0) {
             const preview = userInput.slice(0, 40).trim() + (userInput.length > 40 ? '...' : '');
             const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
             await setDoc(threadRef, { title: preview }, { merge: true });
@@ -182,14 +181,18 @@ function Chat() {
             const updated = [...newMessages, { sender: 'ai', text: aiReply }];
             setMessages(updated);
 
-            const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
-            await setDoc(threadRef, { messages: updated }, { merge: true });
+            // Save only if user is logged in
+            if (user && threadId) {
+                const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
+                await setDoc(threadRef, { messages: updated }, { merge: true });
+            }
         } catch (err) {
             setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
         }
 
         setLoading(false);
     };
+
 
 
     const handleKeyPress = (e) => {
