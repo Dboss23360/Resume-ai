@@ -31,7 +31,6 @@ function Chat() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const textareaRef = useRef(null);
     const scrollRef = useRef(null);
-    const [openMenuId, setOpenMenuId] = useState(null);
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -203,21 +202,6 @@ function Chat() {
         }
     };
 
-    const renameThread = async (threadId) => {
-        const newName = prompt('Enter new chat name:');
-        if (newName && user) {
-            const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
-            await setDoc(threadRef, { title: newName }, { merge: true });
-
-            setThreads(prev =>
-                prev.map(t =>
-                    t.id === threadId ? { ...t, title: newName } : t
-                )
-            );
-            setOpenMenuId(null);
-        }
-    };
-
     const deleteThread = async (threadId) => {
         if (!user) return;
 
@@ -259,17 +243,9 @@ function Chat() {
                             <h3>📂 Recent Chats</h3>
                             <ul>
                                 {threads.map((t) => (
-                                    <li key={t.id} className={`chat-thread ${t.id === selectedThreadId ? 'active-thread' : ''}`}>
+                                    <li key={t.id} className={t.id === selectedThreadId ? 'active-thread' : ''}>
                                         <span onClick={() => selectThread(t.id)}>{t.title || 'Untitled'}</span>
-                                        <div className="thread-menu">
-                                            <button className="menu-button" onClick={() => setOpenMenuId(prev => prev === t.id ? null : t.id)}>⋯</button>
-                                            {openMenuId === t.id && (
-                                                <div className="dropdown">
-                                                    <button onClick={() => renameThread(t.id)}>Rename</button>
-                                                    <button onClick={() => deleteThread(t.id)} disabled={loading}>Delete</button>
-                                                </div>
-                                            )}
-                                        </div>
+                                        <button onClick={() => deleteThread(t.id)} className="delete-btn" disabled={loading}>🗑</button>
                                     </li>
                                 ))}
                             </ul>
