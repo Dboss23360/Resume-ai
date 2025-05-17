@@ -17,6 +17,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); /* optional: makes it pop */
 }
 
+
 /* Internal pages: flex-start on desktop only */
 .top-nav.logo-only {
 }
