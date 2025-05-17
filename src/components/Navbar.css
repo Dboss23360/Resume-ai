@@ -1,20 +1,18 @@
 /* === Top Navbar === */
 .top-nav {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.2rem 1.5rem;
     width: 100%;
-    box-sizing: border-box;
-
-    background: linear-gradient(to right, #0b0b0d, #2c1e6a);
+    max-width: 100%; /* prevents overflow */
+    box-sizing: border-box; /* includes padding in width */
+    background: transparent;
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(to right, rgba(15, 15, 17, 0.5), rgba(16, 16, 47, 0.5));
+    backdrop-filter: blur(6px); /* optional, but looks 🔥 */
 }
-
-
 
 /* Internal pages: flex-start on desktop only */
 .top-nav.logo-only {
