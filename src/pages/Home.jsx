@@ -29,6 +29,7 @@ function Home() {
                     <Link to="/learn" className="hero-btn outline">Learn More</Link>
                 </div>
             </main>
+            <div style={{ height: '2000px' }}></div>
         </div>
     );
 }
