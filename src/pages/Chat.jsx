@@ -15,6 +15,8 @@ import { db } from '../firebase';
 
 import ThreadItem from '../components/ThreadItem';
 
+import ReactMarkdown from 'react-markdown';
+
 import Layout from '../components/Layout';
 import './Chat.css';
 
@@ -169,7 +171,7 @@ function Chat() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [
-                        { role: 'system', content: 'You are a friendly AI career coach...' },
+                        { role: 'system', content: 'You are a friendly AI career coach. Speak casually, use emojis where it feels natural, and format your responses using markdown (**bold**, *italic*, lists, etc.). Separate ideas with line breaks.' },
                         ...newMessages.map((m) => ({
                             role: m.sender === 'user' ? 'user' : 'assistant',
                             content: m.text,
@@ -276,7 +278,9 @@ function Chat() {
                             <div className="chat-scroll-area" ref={scrollRef}>
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>
-                                        <div className="chat-bubble">{msg.text}</div>
+                                        <div className="chat-bubble">
+                                            <ReactMarkdown className="ai-message">{msg.text}</ReactMarkdown>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

@@ -233,3 +233,31 @@ textarea:focus,
     display: flex;
     flex-direction: column;
 }
+
+.ai-message {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 1rem;
+    color: #f0f0f0;
+}
+
+.ai-message strong {
+    font-weight: bold;
+    color: #fff;
+}
+
+.ai-message em {
+    font-style: italic;
+    color: #ddd;
+}
+
+.ai-message p {
+    margin: 0.75rem 0;
+}
+
+.ai-message code {
+    background: #2a2a2a;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+}
