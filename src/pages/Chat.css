@@ -66,14 +66,16 @@
 }
 
 .chat-bubble {
-    padding: 0.9rem 1.4rem;
+    padding: 0rem 1rem;
+    line-height: 1.4;
+    font-size: 0.95rem;
     border-radius: 20px;
-    font-size: 1rem;
-    line-height: 1.45;
     background-color: rgb(36, 34, 41);
     color: #fff;
     word-break: break-word;
 }
+
+
 
 .chat-message.user .chat-bubble {
     background-color: rgba(49, 40, 117, 0.91);
@@ -234,12 +236,12 @@ textarea:focus,
     flex-direction: column;
 }
 
-.ai-message {
-    white-space: pre-wrap;
-    line-height: 1.6;
-    font-size: 1rem;
-    color: #f0f0f0;
+.ai-message p {
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
 }
+
 
 .ai-message strong {
     font-weight: bold;

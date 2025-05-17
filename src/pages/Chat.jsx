@@ -171,7 +171,7 @@ function Chat() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: [
-                        { role: 'system', content: 'You are a friendly AI career coach. Speak casually, use emojis where it feels natural, and format your responses using markdown (**bold**, *italic*, lists, etc.). Separate ideas with line breaks.' },
+                        { role: 'system', content: 'You are a friendly AI career coach...' },
                         ...newMessages.map((m) => ({
                             role: m.sender === 'user' ? 'user' : 'assistant',
                             content: m.text,
@@ -200,11 +200,12 @@ function Chat() {
 
 
     const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
+        if (e.key === 'Enter' && !e.shiftKey && !loading) {
             e.preventDefault();
             sendMessage();
         }
     };
+
 
     const deleteThread = async (threadId) => {
         if (!user) return;
@@ -279,7 +280,11 @@ function Chat() {
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>
                                         <div className="chat-bubble">
-                                            <ReactMarkdown className="ai-message">{msg.text}</ReactMarkdown>
+                                            <ReactMarkdown components={{
+                                                p: (props) => <p className="ai-message" {...props} />
+                                            }}>
+                                                {msg.text}
+                                            </ReactMarkdown>
                                         </div>
                                     </div>
                                 ))}
