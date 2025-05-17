@@ -1,0 +1,71 @@
+.chat-thread {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+}
+
+.thread-content {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.thread-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+/* Dropdown w/ animation */
+.dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: rgba(34, 31, 36, 0.9);
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    padding: 0.4rem 0;
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    min-width: 120px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown.open {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown button {
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.dropdown button:hover {
+    background-color: #333;
+}
