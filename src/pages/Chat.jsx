@@ -121,7 +121,8 @@ function Chat() {
         if (!userInput.trim()) return;
 
         let threadId = selectedThreadId;
-        const newMessages = [...messages, { sender: 'user', text: userInput }];
+        const userMsg = { sender: 'user', text: userInput };
+        const newMessages = [...messages, userMsg];
 
         // If user is logged in and no thread exists, create a new one
         if (user && !threadId) {
@@ -161,6 +162,9 @@ function Chat() {
         setUserInput('');
         setLoading(true);
 
+        // Show temporary empty AI message
+        setMessages(prev => [...prev, { sender: 'ai', text: '' }]);
+
         try {
             const response = await fetch('https://resume-server-r9po.onrender.com/api/refine', {
                 method: 'POST',
@@ -170,24 +174,54 @@ function Chat() {
                         { role: 'system', content: 'You are a friendly AI career coach...' },
                         ...newMessages.map((m) => ({
                             role: m.sender === 'user' ? 'user' : 'assistant',
-                            content: m.text,
+                            content: String(m?.text ?? ''),
                         })),
                     ],
                 }),
             });
 
-            const data = await response.json();
-            const aiReply = data.choices?.[0]?.message?.content || 'No response.';
-            const updated = [...newMessages, { sender: 'ai', text: aiReply }];
-            setMessages(updated);
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let buffer = '';
+            let aiText = '';
 
-            // Save only if user is logged in
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n\n');
+                buffer = lines.pop(); // carry over incomplete line
+
+                for (let line of lines) {
+                    if (!line.startsWith('data:')) continue;
+
+                    const content = line.replace('data: ', '');
+                    if (content === '[DONE]') break;
+                    if (content.startsWith('[ERROR]')) throw new Error(content);
+
+                    aiText += content;
+
+                    setMessages((prev) => {
+                        const updated = [...prev];
+                        const last = updated[updated.length - 1];
+                        if (last?.sender === 'ai') {
+                            last.text = aiText;
+                        }
+                        return [...updated];
+                    });
+                }
+            }
+
+            // Save thread only if logged in
             if (user && threadId) {
                 const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
-                await setDoc(threadRef, { messages: updated }, { merge: true });
+                await setDoc(threadRef, { messages: [...newMessages, { sender: 'ai', text: aiText }] }, { merge: true });
             }
+
         } catch (err) {
-            setMessages(prev => [...prev, { sender: 'ai', text: 'Something went wrong: ' + err.message }]);
+            console.error('Stream error:', err);
+            setMessages(prev => [...prev, { sender: 'ai', text: '⚠️ Error: ' + err.message }]);
         }
 
         setLoading(false);
@@ -244,7 +278,7 @@ function Chat() {
                             <ul>
                                 {threads.map((t) => (
                                     <li key={t.id} className={t.id === selectedThreadId ? 'active-thread' : ''}>
-                                        <span onClick={() => selectThread(t.id)}>{t.title || 'Untitled'}</span>
+                                        <span onClick={() => selectThread(t.id)}>{String(t?.title || 'Untitled')}</span>
                                         <button onClick={() => deleteThread(t.id)} className="delete-btn" disabled={loading}>🗑</button>
                                     </li>
                                 ))}
@@ -257,7 +291,7 @@ function Chat() {
                             <div className="chat-scroll-area" ref={scrollRef}>
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>
-                                        <div className="chat-bubble">{msg.text}</div>
+                                        <div className="chat-bubble">{String(msg?.text || '')}</div>
                                     </div>
                                 ))}
                             </div>
@@ -281,7 +315,7 @@ function Chat() {
                                 onKeyPress={handleKeyPress}
                                 rows={2}
                             />
-                            <button onClick={sendMessage} disabled={loading}>
+                            <button onClick={async () => await sendMessage()} disabled={loading}>
                                 {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
                             </button>
                         </div>
