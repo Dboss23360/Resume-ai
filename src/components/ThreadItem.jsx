@@ -5,7 +5,9 @@ function ThreadItem({ thread, isActive, onSelect, onDelete, onRename, loading })
 
     return (
         <li className={`chat-thread ${isActive ? 'active-thread' : ''}`}>
-            <span onClick={() => onSelect(thread.id)}>{thread.title || 'Untitled'}</span>
+            <div className="thread-content" onClick={() => onSelect(thread.id)}>
+                {thread.title || 'Untitled'}
+            </div>
             <div className="thread-menu">
                 <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>⋯</button>
                 {menuOpen && (
