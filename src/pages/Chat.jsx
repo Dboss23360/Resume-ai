@@ -44,10 +44,16 @@ function Chat() {
     }, []);
 
     useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-        }
+        const scrollToBottom = () => {
+            const el = scrollRef.current;
+            if (el) {
+                el.scrollTop = el.scrollHeight;
+            }
+        };
+
+        scrollToBottom();
     }, [messages]);
+
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -208,7 +214,7 @@ function Chat() {
                         if (last?.sender === 'ai') {
                             last.text = aiText;
                         }
-                        return [...updated];
+                        return updated;
                     });
                 }
             }
