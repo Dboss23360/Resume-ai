@@ -13,6 +13,8 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
+import ThreadItem from '../components/ThreadItem';
+
 import Layout from '../components/Layout';
 import './Chat.css';
 
@@ -243,10 +245,27 @@ function Chat() {
                             <h3>📂 Recent Chats</h3>
                             <ul>
                                 {threads.map((t) => (
-                                    <li key={t.id} className={t.id === selectedThreadId ? 'active-thread' : ''}>
-                                        <span onClick={() => selectThread(t.id)}>{t.title || 'Untitled'}</span>
-                                        <button onClick={() => deleteThread(t.id)} className="delete-btn" disabled={loading}>🗑</button>
-                                    </li>
+                                    <ThreadItem
+                                        key={t.id}
+                                        thread={t}
+                                        isActive={t.id === selectedThreadId}
+                                        onSelect={selectThread}
+                                        onDelete={deleteThread}
+                                        onRename={(threadId) => {
+                                            const newName = prompt('Enter new chat name:');
+                                            if (newName && user) {
+                                                const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
+                                                setDoc(threadRef, { title: newName }, { merge: true });
+
+                                                setThreads(prev =>
+                                                    prev.map(t =>
+                                                        t.id === threadId ? { ...t, title: newName } : t
+                                                    )
+                                                );
+                                            }
+                                        }}
+                                        loading={loading}
+                                    />
                                 ))}
                             </ul>
                         </aside>
