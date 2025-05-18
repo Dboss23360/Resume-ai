@@ -263,7 +263,13 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
-
+                {isMobile && user && (
+                    <div className="chat-mobile-toggle-container">
+                        <button className="mobile-sidebar-toggle" onClick={() => setShowMobileSidebar(!showMobileSidebar)}>
+                            ☰ Chats
+                        </button>
+                    </div>
+                )}
                 {user ? (
                     <div className="chat-header-logged-in">
                         <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
@@ -315,14 +321,6 @@ function Chat() {
 
                     <div className="chat-main">
                         <div className="chat-box">
-                            {isMobile && user && (
-                                <button
-                                    className="mobile-sidebar-toggle"
-                                    onClick={() => setShowMobileSidebar(!showMobileSidebar)}
-                                >
-                                    ☰ Chats
-                                </button>
-                            )}
                             <div className="chat-scroll-area" ref={scrollRef}>
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>
