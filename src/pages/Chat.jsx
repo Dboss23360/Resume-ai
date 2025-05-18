@@ -264,9 +264,11 @@ function Chat() {
         <Layout fullScreen>
             <div className="chat-page">
                 {isMobile && user && (
-                    <button className="mobile-sidebar-toggle" onClick={() => setShowMobileSidebar(!showMobileSidebar)}>
-                        ☰ Chats
-                    </button>
+                    <div className="chat-mobile-toggle-container">
+                        <button className="mobile-sidebar-toggle" onClick={() => setShowMobileSidebar(!showMobileSidebar)}>
+                            ☰ Chats
+                        </button>
+                    </div>
                 )}
                 {user ? (
                     <div className="chat-header-logged-in">
