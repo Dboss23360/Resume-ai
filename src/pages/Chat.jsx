@@ -43,6 +43,7 @@ function Chat() {
     const textareaRef = useRef(null);
     const scrollRef = useRef(null);
     const [sidebarWidth, setSidebarWidth] = useState(260); // default width in px
+    const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const resizingRef = useRef(false);
 
     useEffect(() => {
@@ -262,6 +263,11 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
+                {isMobile && user && (
+                    <button className="mobile-sidebar-toggle" onClick={() => setShowMobileSidebar(!showMobileSidebar)}>
+                        ☰ Chats
+                    </button>
+                )}
                 {user ? (
                     <div className="chat-header-logged-in">
                         <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
@@ -275,8 +281,11 @@ function Chat() {
 
                 <div className="chat-content-wrapper">
                     {user && (
-                        <div className="resizable-sidebar" style={{ width: `${sidebarWidth}px` }}>
-                            <aside className="chat-history">
+                        <div
+                            className={`resizable-sidebar ${isMobile ? (showMobileSidebar ? 'open' : 'hidden') : ''}`}
+                            style={!isMobile ? { width: `${sidebarWidth}px` } : {}}
+                        >
+                        <aside className="chat-history">
                     <h3>📂 Recent Chats</h3>
                             <ul>
                                 {threads.map((t) => (
