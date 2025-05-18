@@ -45,6 +45,7 @@ function Chat() {
     const [sidebarWidth, setSidebarWidth] = useState(260); // default width in px
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const resizingRef = useRef(false);
+    const sidebarRef = useRef(null);
 
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -73,6 +74,24 @@ function Chat() {
         resizingRef.current = true;
         document.body.classList.add('resizing');
     };
+
+    useEffect(() => {
+        if (!isMobile || !showMobileSidebar) return;
+
+        const handleClickOutside = (e) => {
+            if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+                setShowMobileSidebar(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, [isMobile, showMobileSidebar]);
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -277,6 +296,7 @@ function Chat() {
                 <div className="chat-content-wrapper">
                     {user && (
                         <div
+                            ref={sidebarRef}
                             className={`resizable-sidebar ${isMobile ? (showMobileSidebar ? 'open' : 'hidden') : ''}`}
                             style={!isMobile ? { width: `${sidebarWidth}px` } : {}}
                         >
