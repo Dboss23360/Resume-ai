@@ -25,6 +25,13 @@ import SendIcon from '../assets/icons/send-icon.svg';
 
 import { useRef } from 'react';
 
+function formatChatTitle(title) {
+    if (!title) return 'Untitled Chat';
+    const words = title.trim().split(/\s+/);
+    const short = words.slice(0, 5).join(' ');
+    return words.length > 5 ? short + '…' : short;
+}
+
 function Chat() {
     const [user, setUser] = useState(null);
     const [threads, setThreads] = useState([]);
@@ -35,6 +42,36 @@ function Chat() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const textareaRef = useRef(null);
     const scrollRef = useRef(null);
+    const [sidebarWidth, setSidebarWidth] = useState(260); // default width in px
+    const resizingRef = useRef(false);
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            if (!resizingRef.current) return;
+            const min = 180;
+            const max = 400;
+            const sidebarLeftEdge = document.querySelector('.resizable-sidebar')?.getBoundingClientRect().left || 0;
+            const newWidth = Math.min(Math.max(e.clientX - sidebarLeftEdge, min), max);
+            setSidebarWidth(newWidth);
+        };
+
+        const handleMouseUp = () => {
+            resizingRef.current = false;
+            document.body.classList.remove('resizing');
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, []);
+
+    const startResizing = () => {
+        resizingRef.current = true;
+        document.body.classList.add('resizing');
+    };
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -101,23 +138,8 @@ function Chat() {
         }
     };
 
-    const createNewThread = async () => {
-        const threadsRef = collection(db, 'chats', user.uid, 'threads');
-        const newDoc = await addDoc(threadsRef, {
-            title: 'New Chat',
-            messages: [],
-            createdAt: new Date()
-        });
-
-        const newThread = {
-            id: newDoc.id,
-            title: 'New Chat',
-            messages: [],
-            createdAt: new Date()
-        };
-
-        setThreads(prev => [newThread, ...prev]);
-        setSelectedThreadId(newDoc.id);
+    const createNewThread = () => {
+        setSelectedThreadId(null);
         setMessages([]);
     };
 
@@ -148,19 +170,6 @@ function Chat() {
             setThreads(prev => [newThread, ...prev]);
         }
 
-        // Rename thread if this is the first message
-        if (user && threadId && messages.length === 0) {
-            const preview = userInput.slice(0, 40).trim() + (userInput.length > 40 ? '...' : '');
-            const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
-            await setDoc(threadRef, { title: preview }, { merge: true });
-
-            setThreads(prev =>
-                prev.map(t =>
-                    t.id === threadId ? { ...t, title: preview } : t
-                )
-            );
-        }
-
         setMessages(newMessages);
         setUserInput('');
         setLoading(true);
@@ -184,6 +193,28 @@ function Chat() {
             const aiReply = data.choices?.[0]?.message?.content || 'No response.';
             const updated = [...newMessages, { sender: 'ai', text: aiReply }];
             setMessages(updated);
+
+            // Rename thread based on AI reply if it's still "New Chat"
+            if (user && threadId) {
+                const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
+
+                // Get current thread data
+                const snap = await getDoc(threadRef);
+                const threadData = snap.data();
+
+                if (threadData?.title === 'New Chat') {
+                    const sentence = aiReply.split(/[.?!]/)[0].trim(); // first sentence
+                    const preview = sentence.split(/\s+/).slice(0, 7).join(' ');
+                    const aiPreview = preview + (sentence.split(/\s+/).length > 7 ? '…' : '');
+                    await setDoc(threadRef, { title: aiPreview }, { merge: true });
+
+                    setThreads(prev =>
+                        prev.map(t =>
+                            t.id === threadId ? { ...t, title: aiPreview } : t
+                        )
+                    );
+                }
+            }
 
             // Save only if user is logged in
             if (user && threadId) {
@@ -244,13 +275,14 @@ function Chat() {
 
                 <div className="chat-content-wrapper">
                     {user && (
-                        <aside className="chat-history">
-                            <h3>📂 Recent Chats</h3>
+                        <div className="resizable-sidebar" style={{ width: `${sidebarWidth}px` }}>
+                            <aside className="chat-history">
+                    <h3>📂 Recent Chats</h3>
                             <ul>
                                 {threads.map((t) => (
                                     <ThreadItem
                                         key={t.id}
-                                        thread={t}
+                                        thread={{ ...t, shortTitle: formatChatTitle(t.title) }}
                                         isActive={t.id === selectedThreadId}
                                         onSelect={selectThread}
                                         onDelete={deleteThread}
@@ -272,6 +304,8 @@ function Chat() {
                                 ))}
                             </ul>
                         </aside>
+                            <div className="sidebar-resizer" onMouseDown={startResizing}></div>
+                        </div>
                     )}
 
                     <div className="chat-main">

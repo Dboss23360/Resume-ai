@@ -28,7 +28,7 @@
     margin-bottom: 1.75rem;
     display: flex;
     flex-direction: column;
-    box-shadow: inset 0 0 0 1px rgb(255, 255, 255);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
     position: relative;
     overflow: hidden;
 }
@@ -89,7 +89,7 @@
     padding: 0 1rem;
     border-radius: 16px;
     background: linear-gradient(to right, #161618, rgba(16, 13, 31, 0.44));
-    box-shadow: inset 0 0 0 1px white;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
     gap: 0.75rem;
     box-sizing: border-box;
 }
@@ -198,11 +198,14 @@ textarea:focus,
 /* === Chat Layout with Sidebar === */
 .chat-content-wrapper {
     display: flex;
-    max-width: 960px;
     width: 100%;
-    margin: 0 auto;
+    justify-content: center;
     gap: 1.25rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
 }
+
+
 
 /* === Chat History Sidebar === */
 .chat-history {
@@ -231,10 +234,13 @@ textarea:focus,
 
 /* === Main Chat Area === */
 .chat-main {
-    flex: 1;
     display: flex;
     flex-direction: column;
+    flex: 1;
+    max-width: 960px;
 }
+
+
 
 .ai-message p {
     margin: 0;
@@ -263,3 +269,46 @@ textarea:focus,
     border-radius: 4px;
     font-family: monospace;
 }
+
+.resizable-sidebar {
+    display: flex;
+    flex-direction: column;
+    background: #131315;
+    border: none;
+    border-right: 1px solid rgba(221, 221, 221, 0.5);
+    min-width: 180px;
+    max-width: 400px;
+    overflow: hidden;
+    resize: none !important;
+    position: relative;
+    flex-shrink: 0;
+    border-radius: 12px; /* 💡 Add this to fix the curve */
+}
+
+
+.resizable-sidebar::-webkit-resizer {
+    display: none;
+}
+
+.sidebar-resizer {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 40px;
+    cursor: ew-resize;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-resizer::before {
+    content: '||';
+    font-weight: normal;
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+}
+

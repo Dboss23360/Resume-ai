@@ -14,7 +14,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 0.95rem;
+    color: #ccc;
 }
+
 
 .thread-menu {
     position: relative;
@@ -22,7 +25,8 @@
     align-items: center;
 }
 
-.menu-button {
+/* 🛡️ Scoped to only affect thread-menu dropdowns */
+.thread-menu .menu-button {
     background: none;
     border: none;
     font-size: 1.3rem;
@@ -32,8 +36,7 @@
     margin: 0;
 }
 
-/* Dropdown w/ animation */
-.dropdown {
+.thread-menu .dropdown {
     position: absolute;
     top: 100%;
     right: 0;
@@ -50,13 +53,13 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.dropdown.open {
+.thread-menu .dropdown.open {
     display: flex;
     opacity: 1;
     transform: translateY(0);
 }
 
-.dropdown button {
+.thread-menu .dropdown button {
     background: none;
     border: none;
     color: white;
@@ -66,6 +69,6 @@
     cursor: pointer;
 }
 
-.dropdown button:hover {
+.thread-menu .dropdown button:hover {
     background-color: #333;
 }

@@ -202,8 +202,8 @@
     position: absolute;
     top: 140%;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.95);
-    padding: 0.75rem;
+    background-color: rgba(34, 31, 36, 0.9);
+    border: 1px solid #ffffff;    padding: 0.75rem;
     border-radius: 8px;
     display: flex;
     flex-direction: column;

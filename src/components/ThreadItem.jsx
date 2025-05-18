@@ -19,7 +19,9 @@ function ThreadItem({ thread, isActive, onSelect, onDelete, onRename, loading })
     return (
         <li className={`chat-thread ${isActive ? 'active-thread' : ''}`}>
             <div className="thread-content" onClick={() => onSelect(thread.id)}>
-                {thread.title || 'Untitled'}
+                <span className="thread-title" title={thread.title}>
+                    {thread.shortTitle || 'Untitled'}
+                </span>
             </div>
             <div className="thread-menu" ref={menuRef}>
                 <button className="menu-button" onClick={() => setMenuOpen((prev) => !prev)}>⋯</button>
