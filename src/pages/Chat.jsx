@@ -323,7 +323,6 @@ function Chat() {
                                     ☰ Chats
                                 </button>
                             )}
-
                             <div className="chat-scroll-area" ref={scrollRef}>
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>

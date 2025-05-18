@@ -238,6 +238,7 @@ textarea:focus,
     flex-direction: column;
     flex: 1;
     max-width: 960px;
+    position: relative;
 }
 
 
@@ -316,9 +317,9 @@ textarea:focus,
 @media (max-width: 768px) {
     .mobile-sidebar-toggle {
         position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        z-index: 10;
+        top: 0;
+        left: 0;
+        transform: translateY(-100%);
         background: #1f1f2e;
         color: white;
         border: none;
@@ -326,6 +327,7 @@ textarea:focus,
         border-radius: 6px;
         font-size: 1rem;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+        z-index: 10;
     }
 
     .resizable-sidebar {
