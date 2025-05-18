@@ -263,60 +263,64 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
-                {user && (
-                    <div className="chat-top-buttons">
-                        {isMobile && (
-                            <button className="mobile-sidebar-toggle" onClick={() => setShowMobileSidebar(!showMobileSidebar)}>
-                                ☰ Chats
-                            </button>
-                        )}
-                        <button className="clear-chat-btn top-right-btn" onClick={createNewThread}>
+                {user ? (
+                    <div className="chat-header-logged-in">
+                        <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
+                        <button className="clear-chat-btn" onClick={createNewThread}>
                             ➕ New Chat
                         </button>
                     </div>
+                ) : (
+                    <h1>MyEzJobs AI</h1>
                 )}
-                <div className="chat-content-wrapper">
 
-                {user && (
+                <div className="chat-content-wrapper">
+                    {user && (
                         <div
                             className={`resizable-sidebar ${isMobile ? (showMobileSidebar ? 'open' : 'hidden') : ''}`}
                             style={!isMobile ? { width: `${sidebarWidth}px` } : {}}
                         >
-                        <aside className="chat-history">
-                    <h3>📂 Recent Chats</h3>
-                            <ul>
-                                {threads.map((t) => (
-                                    <ThreadItem
-                                        key={t.id}
-                                        thread={{ ...t, shortTitle: formatChatTitle(t.title) }}
-                                        isActive={t.id === selectedThreadId}
-                                        onSelect={selectThread}
-                                        onDelete={deleteThread}
-                                        onRename={(threadId) => {
-                                            const newName = prompt('Enter new chat name:');
-                                            if (newName && user) {
-                                                const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
-                                                setDoc(threadRef, { title: newName }, { merge: true });
+                            <aside className="chat-history">
+                                <h3>📂 Recent Chats</h3>
+                                <ul>
+                                    {threads.map((t) => (
+                                        <ThreadItem
+                                            key={t.id}
+                                            thread={{ ...t, shortTitle: formatChatTitle(t.title) }}
+                                            isActive={t.id === selectedThreadId}
+                                            onSelect={selectThread}
+                                            onDelete={deleteThread}
+                                            onRename={(threadId) => {
+                                                const newName = prompt('Enter new chat name:');
+                                                if (newName && user) {
+                                                    const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
+                                                    setDoc(threadRef, { title: newName }, { merge: true });
 
-                                                setThreads(prev =>
-                                                    prev.map(t =>
-                                                        t.id === threadId ? { ...t, title: newName } : t
-                                                    )
-                                                );
-                                            }
-                                        }}
-                                        loading={loading}
-                                    />
-                                ))}
-                            </ul>
-                        </aside>
+                                                    setThreads(prev =>
+                                                        prev.map(t =>
+                                                            t.id === threadId ? { ...t, title: newName } : t
+                                                        )
+                                                    );
+                                                }
+                                            }}
+                                            loading={loading}
+                                        />
+                                    ))}
+                                </ul>
+                            </aside>
                             <div className="sidebar-resizer" onMouseDown={startResizing}></div>
                         </div>
                     )}
 
                     <div className="chat-main">
-
-
+                        {isMobile && user && (
+                            <button
+                                className="mobile-sidebar-toggle"
+                                onClick={() => setShowMobileSidebar(!showMobileSidebar)}
+                            >
+                                ☰ Chats
+                            </button>
+                        )}
                         <div className="chat-box">
                             <div className="chat-scroll-area" ref={scrollRef}>
                                 {messages.map((msg, index) => (
