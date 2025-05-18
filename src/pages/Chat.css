@@ -315,16 +315,16 @@ textarea:focus,
 /* === Mobile Sidebar Drawer === */
 @media (max-width: 768px) {
     .mobile-sidebar-toggle {
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        z-index: 100;
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 10;
         background: #1f1f2e;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
         border-radius: 6px;
-        font-size: 1.1rem;
+        font-size: 1rem;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
     }
 
@@ -365,32 +365,6 @@ textarea:focus,
 /* === Hide toggle button on desktop === */
 @media (min-width: 769px) {
     .mobile-sidebar-toggle {
-        position: absolute;
-        top: -2rem; /* sits above the chat box */
-        left: 0.5rem;
-        z-index: 100;
-        background: #1f1f2e;
-        color: white;
-        border: none;
-        padding: 0.4rem 0.85rem;
-        border-radius: 8px;
-        font-size: 1rem;
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+        display: none;
     }
 }
-
-@media (max-width: 768px) {
-    .chat-mobile-toggle-container {
-        position: relative;
-        width: 100%;
-        max-width: 960px;
-        margin-top: -1rem;
-        margin-bottom: 0.5rem;
-        display: flex;
-        justify-content: flex-start;
-        padding-left: 1rem;
-        box-sizing: border-box;
-    }
-}
-
-
