@@ -13,7 +13,7 @@ function Home() {
                 </h2>
 
                 <h1 className="hero-title">
-                    From <span className="highlight">“Send”</span> to <span className="highlight">“You’re Hired”</span>
+                    From <span className="highlight">“Send”</span> to <span className="gradient-text">“You’re Hired”</span>
                 </h1>
 
                 <p className="hero-subtext">
@@ -26,7 +26,7 @@ function Home() {
                     <Link to="/upload" className="hero-btn">Upload Resume</Link>
                     <Link to="/chat" className="hero-btn">AI Assistant</Link>
                     <Link to="/jobs" className="hero-btn">Job Board</Link>
-                    <Link to="/learn" className="hero-btn outline">Learn More</Link>
+                    <Link to="/learn" className="hero-btn gradient-border-btn">Learn More</Link>
                 </div>
             </main>
         </div>

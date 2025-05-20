@@ -39,7 +39,7 @@
 .logo-text {
     font-size: 1.55rem;
     font-weight: 700;
-    color: white;
+    color: var(--text); /* ✅ Matches light or dark based on theme */
 }
 
 /* Desktop Nav */
@@ -226,4 +226,48 @@
 .dropdown a:hover,
 .dropdown button:hover {
     color: #a58bff;
+}
+
+/* === Light Theme Overrides === */
+body.light .top-nav {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.85), rgba(245, 245, 255, 0.85));
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body.light .nav-links a {
+    color: #1a1a1a;
+}
+
+body.light .nav-btn {
+    border: 1.5px solid #1a1a1a;
+    color: #1a1a1a;
+}
+
+body.light .nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+body.light .nav-btn.filled {
+    background-color: #1a1a1a;
+    color: white;
+}
+
+body.light .nav-btn.filled:hover {
+    background-color: #333;
+}
+
+body.light .dropdown {
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+body.light .dropdown a,
+body.light .dropdown button {
+    color: #1a1a1a;
+}
+
+body.light .dropdown a:hover,
+body.light .dropdown button:hover {
+    color: #5a2bc9;
 }

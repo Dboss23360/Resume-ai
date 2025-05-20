@@ -1,25 +1,50 @@
+/* =================== */
+/*   Global + Theme    */
+/* =================== */
+
+/* System font smoothing + defaults */
 :root {
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
-
-  /* GLOBAL GRADIENT BACKGROUND */
-  background: linear-gradient(90deg,
-  #0A0A0A 0%,
-  #0A0A0A 28%,
-  #130C2A 45%,
-  #2B1A5F 70%,
-  #3A2A80 100%);
-
-  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* === LIGHT MODE DEFAULT === */
+  --bg-flat: #faf9ff; /* fallback flat color */
+  --bg: linear-gradient(to bottom, #faf9ff 0%, #f6f4ff 35%, #f2f1ff 100%);
+  --text: #1a1a1a;
+  --link: #5a2bc9;
+  --link-hover: #341d91;
+  --btn-bg: white;
+  --btn-fill: #fefcff;
+  --btn-text: #111;
+  --btn-hover-bg: #eee;
+  --btn-border: #111111;
+
+  color-scheme: light;
 }
 
-/* Make layout predictable */
+/* DARK MODE OVERRIDES */
+body.dark {
+  --bg: linear-gradient(90deg, #0A0A0A 0%, #0A0A0A 28%, #130C2A 45%, #2B1A5F 70%, #3A2A80 100%);
+  --text: rgba(255, 255, 255, 0.87);
+  --link: #a582f7;
+  --link-hover: #d4c0ff;
+  --btn-bg: #1a1a1a;
+  --btn-text: white;
+  --btn-hover-bg: rgba(165, 130, 247, 0.08);
+  --btn-border: #a582f7;
+
+  color-scheme: dark;
+}
+
+/* =================== */
+/*   Global Reset      */
+/* =================== */
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -33,8 +58,8 @@ html, body {
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
-  background: inherit;
-  color: inherit;
+  background: var(--bg);
+  color: var(--text);
 }
 
 #root {
@@ -43,24 +68,31 @@ html, body {
   max-width: 100%;
 }
 
-/* Typography */
+/* =================== */
+/*   Typography        */
+/* =================== */
+
 a {
   font-weight: 500;
-  color: #a582f7;
+  color: var(--link);
   text-decoration: none;
 }
+
 a:hover {
-  color: #d4c0ff;
+  color: var(--link-hover);
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
   font-weight: 800;
-  color: white;
+  color: var(--text);
 }
 
-/* Buttons */
+/* =================== */
+/*   Buttons           */
+/* =================== */
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -68,21 +100,19 @@ button {
   font-size: 1em;
   font-weight: 600;
   font-family: inherit;
-  background-color: #1a1a1a;
-  color: white;
+  background-color: transparent;
+  color: var(--btn-text);
   cursor: pointer;
   transition: border-color 0.25s, background-color 0.25s;
 }
 
 button:hover {
-  border-color: #a582f7;
-  background-color: rgba(165, 130, 247, 0.08);
+  border-color: var(--btn-border);
+  background-color: var(--btn-hover-bg);
 }
 
 button:focus,
 button:focus-visible {
-  outline: 3px solid #a582f7;
+  outline: 3px solid var(--btn-border);
   outline-offset: 2px;
 }
-
-/* REMOVE unused light mode overrides */

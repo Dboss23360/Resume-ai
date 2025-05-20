@@ -22,6 +22,8 @@ import './Chat.css';
 
 import ImageIcon from '../assets/icons/image-icon.svg';
 import SendIcon from '../assets/icons/send-icon.svg';
+import NewChatIcon from '../assets/icons/new-chat-icon.svg';
+import SidebarIcon from '../assets/icons/sidebar-icon.svg';
 
 import { useRef } from 'react';
 
@@ -40,40 +42,10 @@ function Chat() {
     const [userInput, setUserInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const textareaRef = useRef(null);
+    const inputRef = useRef(null);
     const scrollRef = useRef(null);
-    const [sidebarWidth, setSidebarWidth] = useState(260); // default width in px
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
-    const resizingRef = useRef(false);
     const sidebarRef = useRef(null);
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            if (!resizingRef.current) return;
-            const min = 180;
-            const max = 400;
-            const sidebarLeftEdge = document.querySelector('.resizable-sidebar')?.getBoundingClientRect().left || 0;
-            const newWidth = Math.min(Math.max(e.clientX - sidebarLeftEdge, min), max);
-            setSidebarWidth(newWidth);
-        };
-
-        const handleMouseUp = () => {
-            resizingRef.current = false;
-            document.body.classList.remove('resizing');
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
-        };
-    }, []);
-
-    const startResizing = () => {
-        resizingRef.current = true;
-        document.body.classList.add('resizing');
-    };
 
     useEffect(() => {
         if (!isMobile || !showMobileSidebar) return;
@@ -93,16 +65,27 @@ function Chat() {
         };
     }, [isMobile, showMobileSidebar]);
 
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = '42px';
-        }
-    }, []);
 
 
     useEffect(() => {
         document.title = 'Chat – MyEzJobs';
     }, []);
+
+    useEffect(() => {
+        const el = inputRef.current;
+        if (!el) return;
+
+        const resize = () => {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+        };
+
+        resize(); // Initial run
+        el.addEventListener('input', resize);
+
+        return () => el.removeEventListener('input', resize);
+    }, []);
+
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -192,6 +175,13 @@ function Chat() {
 
         setMessages(newMessages);
         setUserInput('');
+        if (inputRef.current) {
+            inputRef.current.innerHTML = ''; // fully clears DOM
+            inputRef.current.blur();         // reset ghost selection
+            requestAnimationFrame(() => {
+                inputRef.current.focus();      // caret now visible
+            });
+        }
         setLoading(true);
 
         try {
@@ -248,16 +238,6 @@ function Chat() {
         setLoading(false);
     };
 
-
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey && !loading) {
-            e.preventDefault();
-            sendMessage();
-        }
-    };
-
-
     const deleteThread = async (threadId) => {
         if (!user) return;
 
@@ -282,57 +262,75 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
-                {user ? (
-                    <div className="chat-header-logged-in">
-                        <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
-                        <button className="clear-chat-btn" onClick={createNewThread}>
-                            ➕ New Chat
+                <div className={`chat-content-wrapper ${!showMobileSidebar ? 'sidebar-collapsed' : ''}`}>
+                {user && !isMobile && !showMobileSidebar && (
+                        <button
+                            className="sidebar-toggle-btn"
+                            onClick={() => setShowMobileSidebar(true)}
+                        >
+                            <img src={SidebarIcon} alt="Open Sidebar" />
                         </button>
-                    </div>
-                ) : (
-                    <h1>MyEzJobs AI</h1>
-                )}
+                    )}
 
-                <div className="chat-content-wrapper">
+
                     {user && (
                         <div
                             ref={sidebarRef}
-                            className={`resizable-sidebar ${isMobile ? (showMobileSidebar ? 'open' : 'hidden') : ''}`}
-                            style={!isMobile ? { width: `${sidebarWidth}px` } : {}}
+                            className={`resizable-sidebar ${showMobileSidebar ? 'open' : 'collapsed'}`}
                         >
-                            <aside className="chat-history">
-                                <h3>📂 Recent Chats</h3>
-                                <ul>
-                                    {threads.map((t) => (
-                                        <ThreadItem
-                                            key={t.id}
-                                            thread={{ ...t, shortTitle: formatChatTitle(t.title) }}
-                                            isActive={t.id === selectedThreadId}
-                                            onSelect={selectThread}
-                                            onDelete={deleteThread}
-                                            onRename={(threadId) => {
-                                                const newName = prompt('Enter new chat name:');
-                                                if (newName && user) {
-                                                    const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
-                                                    setDoc(threadRef, { title: newName }, { merge: true });
+                        <aside className="chat-history">
+                            <div className="sidebar-header">
+                                <div className="sidebar-header-top">
+                                    <img src={SidebarIcon} alt="Toggle" className="toggle-icon" onClick={() => setShowMobileSidebar(false)} />
+                                    <h3>Recent Chats</h3>
+                                </div>
+                                <button className="new-chat-icon" onClick={createNewThread}>
+                                    <img src={NewChatIcon} alt="New Chat" />
+                                </button>
+                            </div>
 
-                                                    setThreads(prev =>
-                                                        prev.map(t =>
-                                                            t.id === threadId ? { ...t, title: newName } : t
-                                                        )
-                                                    );
-                                                }
-                                            }}
-                                            loading={loading}
-                                        />
-                                    ))}
-                                </ul>
+
+                            <div className="chat-thread-list">
+                                    <ul>
+                                        {threads.map((t) => (
+                                            <ThreadItem
+                                                key={t.id}
+                                                thread={{ ...t, shortTitle: formatChatTitle(t.title) }}
+                                                isActive={t.id === selectedThreadId}
+                                                onSelect={selectThread}
+                                                onDelete={deleteThread}
+                                                onRename={(threadId) => {
+                                                    const newName = prompt('Enter new chat name:');
+                                                    if (newName && user) {
+                                                        const threadRef = doc(db, 'chats', user.uid, 'threads', threadId);
+                                                        setDoc(threadRef, { title: newName }, { merge: true });
+
+                                                        setThreads(prev =>
+                                                            prev.map(t =>
+                                                                t.id === threadId ? { ...t, title: newName } : t
+                                                            )
+                                                        );
+                                                    }
+                                                }}
+                                                loading={loading}
+                                            />
+                                        ))}
+                                    </ul>
+                                </div>
                             </aside>
-                            <div className="sidebar-resizer" onMouseDown={startResizing}></div>
+
                         </div>
                     )}
 
                     <div className="chat-main">
+                        {user ? (
+                            <div className="chat-header-logged-in center-header">
+                                <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
+                            </div>
+                        ) : (
+                            <h1 className="chat-header-logged-in center-header">MyEzJobs AI</h1>
+                        )}
+
                         {isMobile && user && (
                             <button
                                 className="mobile-sidebar-toggle"
@@ -362,19 +360,35 @@ function Chat() {
                             <button type="button" className="icon-btn">
                                 <img src={ImageIcon} alt="Upload" className="image-icon" />
                             </button>
-                            <textarea
-                                ref={textareaRef}
-                                placeholder={
+                            <div
+                                ref={inputRef}
+                                contentEditable
+                                className="chat-editable"
+                                data-placeholder={
                                     isMobile
                                         ? 'Need help?'
                                         : 'Ask anything about resumes, careers, or interviews...'
                                 }
-                                value={userInput}
-                                onChange={(e) => setUserInput(e.target.value)}
+                                data-show-placeholder={userInput.trim() === ''} // 👈 this controls the placeholder
+                                onInput={(e) => {
+                                    const text = e.currentTarget.textContent.trim();
+                                    setUserInput(text);
 
-                                onKeyPress={handleKeyPress}
-                                rows={2}
+                                    // Force remove ghost nodes like <br> that mess up placeholder logic
+                                    if (text === '') {
+                                        e.currentTarget.innerHTML = ''; // force cleanup
+                                    }
+                                }}
+
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey && !loading) {
+                                        e.preventDefault();
+                                        sendMessage();
+                                    }
+                                }}
+                                suppressContentEditableWarning
                             />
+
                             <button onClick={sendMessage} disabled={loading}>
                                 {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
                             </button>

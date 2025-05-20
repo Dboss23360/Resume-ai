@@ -80,7 +80,7 @@ function Navbar() {
                         </>
                     ) : (
                         <>
-                            <Link to="/profile" onClick={closeMenu}>Account Settings</Link>
+                            <Link to="/account" onClick={closeMenu}>Account Settings</Link>
                             <button onClick={handleLogout} className="nav-btn">Logout</button>
                         </>
                     )}
@@ -119,7 +119,7 @@ function Navbar() {
                                 />
                                 {dropdownOpen && (
                                     <div className="dropdown">
-                                        <Link to="/profile" onClick={() => setDropdownOpen(false)}>
+                                        <Link to="/account" onClick={() => setDropdownOpen(false)}>
                                             Account Settings
                                         </Link>
                                         <button onClick={handleLogout}>Logout</button>

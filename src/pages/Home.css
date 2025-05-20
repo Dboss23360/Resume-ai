@@ -1,16 +1,16 @@
 /* Global background and text styles */
-body {
+html, body {
     margin: 0;
     padding: 0;
+    height: 100vh;
+    overflow: hidden;
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(90deg,
-    #0A0A0A 0%,
-    #0A0A0A 28%,
-    #130C2A 45%,
-    #2B1A5F 70%,
-    #3A2A80 100%);
-    color: white;
+    background: var(--bg);
+    color: var(--text);
 }
+
+
+
 
 /* Hero Section */
 .hero-container {
@@ -28,7 +28,7 @@ body {
 .hero-tagline {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #b084f9;
+    color: var(--link);
     margin-bottom: 2.25rem;
 }
 
@@ -37,12 +37,12 @@ body {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 2.5rem;
-    color: white;
+    color: var(--text); /* was white */
 }
 
 .hero-subtext {
     font-size: 1.5rem;
-    color: #d1cfe9;
+    color: var(--text); /* was #d1cfe9 */
     line-height: 2.1rem;
     max-width: 780px;
     margin-bottom: 4rem;
@@ -57,8 +57,8 @@ body {
 
 .hero-btn {
     background-color: transparent;
-    border: 2px solid #a582f7;
-    color: white;
+    border: 2px solid var(--btn-border);
+    color: var(--btn-text);
     padding: 1.1rem 2.5rem;
     font-size: 1.2rem;
     font-weight: 600;
@@ -69,14 +69,16 @@ body {
     text-align: center;
 }
 
+
 .hero-btn:hover {
-    background-color: rgba(165, 130, 247, 0.1);
+    background-color: rgba(0, 0, 0, 0.05); /* clean and subtle */
     transform: translateY(-2px);
 }
 
 .hero-btn.outline {
-    border-color: white;
+    border-color: var(--btn-border); /* previously white */
 }
+
 
 /* === Mobile Only === */
 @media (max-width: 768px) {
@@ -115,4 +117,34 @@ body {
         font-size: 1.15rem;
         padding: 1.1rem 2rem;
     }
+}
+
+/* === Gradient Text Style === */
+.gradient-text {
+    background: linear-gradient(90deg, #5a8fff, #a259ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* === Gradient Border Button (for Learn More) === */
+.gradient-border-btn {
+    border: 2px solid transparent;
+    background: linear-gradient(to right, transparent, transparent) padding-box,
+    linear-gradient(90deg, #5ac8fa, #a259ff) border-box;
+    color: var(--text);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border-radius: 30px;
+    padding: 1.1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+
+.gradient-border-btn:hover {
+    transform: translateY(-2px);
 }

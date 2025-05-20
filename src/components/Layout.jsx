@@ -1,32 +1,49 @@
 import Navbar from './Navbar';
 import './Layout.css';
+import { useTheme } from '../context/ThemeContext';
 
 function Layout({ children, fullScreen = false }) {
+    const { theme } = useTheme();
+
+    const darkBackground = 'linear-gradient(90deg, #0A0A0A 0%, #0A0A0A 28%, #130C2A 45%, #2B1A5F 70%, #3A2A80 100%)';
+    const lightBackground = 'linear-gradient(90deg, #ffffff 0%, #f7f7ff 28%, #e9e5ff 45%, #ddd8ff 70%, #d1caff 100%)';
+    const background = theme === 'light' ? lightBackground : darkBackground;
+    const textColor = theme === 'light' ? '#111' : 'white';
+
     return (
         <div
             style={{
-                minHeight: '100vh',
-                display: 'block',
-                background: 'linear-gradient(90deg, #0A0A0A 0%, #0A0A0A 28%, #130C2A 45%, #2B1A5F 70%, #3A2A80 100%)',
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                background,
                 fontFamily: 'Inter, sans-serif',
-                color: 'white',
+                color: textColor,
+                overflow: 'hidden',
             }}
         >
             <Navbar />
 
             {fullScreen ? (
-                children
-            ) : (
-                <main className="responsive-wrapper">
+                <main
+                    style={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        overflow: 'hidden',
+                    }}
+                >
                     {children}
                 </main>
+            ) : (
+                <main className="responsive-wrapper">{children}</main>
             )}
 
             <footer
                 style={{
                     textAlign: 'center',
                     fontSize: '0.85rem',
-                    color: '#aaa',
+                    color: theme === 'light' ? '#555' : '#aaa',
                     padding: '1rem 0',
                 }}
             >

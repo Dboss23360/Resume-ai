@@ -5,6 +5,7 @@ import Chat from "./pages/Chat";
 import RefineResume from "./pages/RefineResume";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AccountSettings from "./pages/AccountSettings"; // ✅ import new page
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/account" element={<AccountSettings />} /> {}
             </Routes>
         </Router>
     );
