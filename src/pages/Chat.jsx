@@ -18,7 +18,12 @@ import ThreadItem from '../components/ThreadItem';
 import ReactMarkdown from 'react-markdown';
 
 import Layout from '../components/Layout';
-import './Chat.css';
+import '../styles/chat/ChatLayout.css';
+import '../styles/chat/ChatSidebar.css';
+import '../styles/chat/ChatBubbles.css';
+import '../styles/chat/ChatInput.css';
+import '../styles/chat/ChatTheme.css';
+import '../styles/chat/ChatUtils.css';
 
 import ImageIcon from '../assets/icons/image-icon.svg';
 import SendIcon from '../assets/icons/send-icon.svg';
@@ -120,13 +125,9 @@ function Chat() {
         snapshot.forEach(doc => loaded.push({ id: doc.id, ...doc.data() }));
         setThreads(loaded);
 
-        if (loaded.length > 0) {
-            setSelectedThreadId(loaded[0].id);
-            setMessages(loaded[0].messages || []);
-        } else {
-            setSelectedThreadId(null);
-            setMessages([]);
-        }
+        // ✅ Start in a blank new chat regardless of thread history
+        setSelectedThreadId(null);
+        setMessages([]);
     };
 
 
@@ -262,18 +263,21 @@ function Chat() {
     return (
         <Layout fullScreen>
             <div className="chat-page">
-                <div className={`chat-content-wrapper ${!showMobileSidebar ? 'sidebar-collapsed' : ''}`}>
+                {/* FIXED: toggle moved OUTSIDE the collapsing wrapper */}
                 {user && !isMobile && !showMobileSidebar && (
-                        <button
-                            className="sidebar-toggle-btn"
-                            onClick={() => setShowMobileSidebar(true)}
-                        >
-                            <img src={SidebarIcon} alt="Open Sidebar" />
-                        </button>
-                    )}
+                    <button
+                        className="sidebar-toggle-btn"
+                        onClick={() => setShowMobileSidebar(true)}
+                    >
+                        <img src={SidebarIcon} alt="Open Sidebar" />
+                    </button>
+                )}
+
+                <div className={`chat-content-wrapper ${!showMobileSidebar ? 'sidebar-collapsed' : ''}`}>
 
 
-                    {user && (
+
+                {user && (
                         <div
                             ref={sidebarRef}
                             className={`resizable-sidebar ${showMobileSidebar ? 'open' : 'collapsed'}`}
@@ -323,14 +327,6 @@ function Chat() {
                     )}
 
                     <div className="chat-main">
-                        {user ? (
-                            <div className="chat-header-logged-in center-header">
-                                <h1>👋 Welcome back, {user.displayName || 'friend'}!</h1>
-                            </div>
-                        ) : (
-                            <h1 className="chat-header-logged-in center-header">MyEzJobs AI</h1>
-                        )}
-
                         {isMobile && user && (
                             <button
                                 className="mobile-sidebar-toggle"
@@ -340,6 +336,11 @@ function Chat() {
                             </button>
                         )}
                         <div className="chat-box">
+                            {messages.length === 0 && (
+                                <div className="chat-welcome-banner">
+                                    <h1>👋 Welcome back, {user?.displayName || 'friend'}!</h1>
+                                </div>
+                            )}
                             <div className="chat-scroll-area" ref={scrollRef}>
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`chat-message ${msg.sender}`}>
@@ -354,44 +355,47 @@ function Chat() {
                                 ))}
                             </div>
                         </div>
-
-
                         <div className="chat-input-area">
-                            <button type="button" className="icon-btn">
-                                <img src={ImageIcon} alt="Upload" className="image-icon" />
-                            </button>
-                            <div
-                                ref={inputRef}
-                                contentEditable
-                                className="chat-editable"
-                                data-placeholder={
-                                    isMobile
-                                        ? 'Need help?'
-                                        : 'Ask anything about resumes, careers, or interviews...'
-                                }
-                                data-show-placeholder={userInput.trim() === ''} // 👈 this controls the placeholder
-                                onInput={(e) => {
-                                    const text = e.currentTarget.textContent.trim();
-                                    setUserInput(text);
+                            {/* ⬅ Image button (goes first) */}
+                            <div className="chat-buttons chat-buttons-left">
+                                <button type="button" className="icon-btn">
+                                    <img src={ImageIcon} alt="Upload" className="image-icon" />
+                                </button>
+                            </div>
 
-                                    // Force remove ghost nodes like <br> that mess up placeholder logic
-                                    if (text === '') {
-                                        e.currentTarget.innerHTML = ''; // force cleanup
+                            {/* ✍️ Input container */}
+                            <div className="chat-editable-container">
+                                <div
+                                    ref={inputRef}
+                                    contentEditable
+                                    className="chat-editable"
+                                    data-placeholder={
+                                        isMobile
+                                            ? 'Need help?'
+                                            : 'Ask anything about resumes, careers, or interviews...'
                                     }
-                                }}
+                                    data-show-placeholder={userInput.trim() === ''}
+                                    onInput={(e) => {
+                                        const text = e.currentTarget.textContent.trim();
+                                        setUserInput(text);
+                                        if (text === '') e.currentTarget.innerHTML = '';
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey && !loading) {
+                                            e.preventDefault();
+                                            sendMessage();
+                                        }
+                                    }}
+                                    suppressContentEditableWarning
+                                />
+                            </div>
 
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && !e.shiftKey && !loading) {
-                                        e.preventDefault();
-                                        sendMessage();
-                                    }
-                                }}
-                                suppressContentEditableWarning
-                            />
-
-                            <button onClick={sendMessage} disabled={loading}>
-                                {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
-                            </button>
+                            {/* ➡ Send button (goes last) */}
+                            <div className="chat-buttons chat-buttons-right">
+                                <button onClick={sendMessage} disabled={loading}>
+                                    {loading ? '...' : <img src={SendIcon} alt="Send" className="chat-icon" />}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

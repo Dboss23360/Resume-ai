@@ -1,0 +1,73 @@
+/* === Chat Bubbles === */
+.chat-message {
+    display: flex;
+    max-width: 80%;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    justify-content: flex-end;
+}
+
+.chat-message.ai {
+    align-self: flex-start;
+    justify-content: flex-start;
+}
+
+.chat-bubble {
+    padding: 0rem 1rem;
+    line-height: 1.4;
+    font-size: 0.95rem;
+    border-radius: 16px;
+    word-break: break-word;
+    max-width: 100%;
+    white-space: pre-wrap;
+}
+
+
+/* Light Mode */
+body.light .chat-message.user .chat-bubble {
+    background-color: rgba(211, 215, 253, 0.8);
+    color: #1a1a1a;
+}
+
+body.light .chat-message.ai .chat-bubble {
+    background-color: transparent;
+    color: #1a1a1a;
+}
+
+/* Dark Mode */
+body.dark .chat-message.user .chat-bubble {
+    background-color: #6c44ec;
+    color: white;
+}
+
+body.dark .chat-message.ai .chat-bubble {
+    background-color: transparent;
+    color: #eaeaea;
+}
+
+/* Markdown styling inside AI bubbles */
+.ai-message p {
+    margin: 0.75rem 0;
+    padding: 0;
+    line-height: inherit;
+}
+
+.ai-message strong {
+    font-weight: bold;
+    color: inherit;
+}
+
+.ai-message em {
+    font-style: italic;
+    color: inherit;
+}
+
+.ai-message code {
+    background: #2a2a2a;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #fff;
+}

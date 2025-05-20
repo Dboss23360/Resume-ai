@@ -1,0 +1,132 @@
+/* === Chat Input Area === */
+.chat-input-area {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 20px;
+    background: transparent;
+    border: 1px solid rgba(158, 158, 158, 0.8);
+    min-height: 100px;
+    max-width: 690px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 0.75rem;
+    box-sizing: border-box;
+}
+
+/* === Left button === */
+.chat-buttons-left {
+    display: flex;
+    align-items: flex-end;
+    align-self: flex-end;
+}
+
+/* === Right button === */
+.chat-buttons-right {
+    display: flex;
+    align-items: flex-end;
+    align-self: flex-end;
+}
+
+/* === Wrapper for editable input === */
+.chat-editable-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* === Editable Input Box (contenteditable) === */
+.chat-editable {
+    font-size: 1.25rem;
+    font-family: inherit;
+    line-height: 1.6rem;
+    color: #444;
+    caret-color: #444;
+    background: transparent;
+    border: none;
+    outline: none;
+    min-height: 100%;
+    max-height: 160px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    box-sizing: border-box;
+    padding: 0;
+    padding-left: -0.8rem; /* 👈 match this with .chat-editable */
+    margin: 0;
+    display: block;
+}
+
+/* === Placeholder text === */
+.chat-editable:empty::before {
+    content: attr(data-placeholder);
+    color: #787878;
+    pointer-events: none;
+    display: block;
+    line-height: 1.6rem;
+    padding: 0; /* No extra vertical shift */
+    padding-left: -0.8rem; /* 👈 match this with .chat-editable */
+}
+
+/* === Button styles === */
+.chat-buttons-left button,
+.chat-buttons-right button,
+.icon-btn {
+    width: 42px;
+    height: 42px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.chat-buttons-left button:disabled,
+.chat-buttons-right button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.chat-buttons-left button:hover:not(:disabled),
+.chat-buttons-right button:hover:not(:disabled),
+.icon-btn:hover {
+    opacity: 1;
+}
+
+/* === Icons === */
+.chat-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(0.5);
+    opacity: 1;
+    transition: filter 0.2s ease;
+}
+
+.image-icon {
+    width: 38px;
+    height: 34px;
+    object-fit: contain;
+    filter: brightness(0.5);
+    opacity: 1;
+    transition: filter 0.2s ease;
+}
+
+.chat-icon:hover,
+.image-icon:hover {
+    filter: brightness(2);
+}
+
+/* === Remove outlines === */
+button:focus,
+textarea:focus,
+.icon-btn:focus {
+    outline: none;
+    box-shadow: none;
+}

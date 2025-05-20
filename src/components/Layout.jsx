@@ -6,7 +6,7 @@ function Layout({ children, fullScreen = false }) {
     const { theme } = useTheme();
 
     const darkBackground = 'linear-gradient(90deg, #0A0A0A 0%, #0A0A0A 28%, #130C2A 45%, #2B1A5F 70%, #3A2A80 100%)';
-    const lightBackground = 'linear-gradient(90deg, #ffffff 0%, #f7f7ff 28%, #e9e5ff 45%, #ddd8ff 70%, #d1caff 100%)';
+    const lightBackground = 'linear-gradient(90deg, #ffffff 0%, #fafaff 28%, #f3f1ff 45%, #f0eeff 70%, #ecebff 100%)';
     const background = theme === 'light' ? lightBackground : darkBackground;
     const textColor = theme === 'light' ? '#111' : 'white';
 
