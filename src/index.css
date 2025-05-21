@@ -23,7 +23,7 @@
   --btn-text: #111;
   --btn-hover-bg: #eee;
   --btn-border: #111111;
-
+  --input-bg: #ffffff;
   color-scheme: light;
 }
 
@@ -37,7 +37,7 @@ body.dark {
   --btn-text: white;
   --btn-hover-bg: rgba(165, 130, 247, 0.08);
   --btn-border: #a582f7;
-
+  --input-bg: #1e1e2f;
   color-scheme: dark;
 }
 
