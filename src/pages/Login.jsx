@@ -27,11 +27,20 @@ function Login() {
             await signInWithEmailAndPassword(auth, email, password);
             navigate("/");
         } catch (err) {
-            setError(err.message);
+            if (
+                err.code === "auth/invalid-credential" ||
+                err.code === "auth/wrong-password" ||
+                err.code === "auth/user-not-found"
+            ) {
+                setError("Invalid email or password.");
+            } else {
+                setError("Something went wrong. Please try again.");
+            }
         } finally {
             setLoading(false);
         }
     };
+
 
     const loginWithGoogle = async () => {
         setLoading(true);
@@ -42,11 +51,18 @@ function Login() {
             await signInWithPopup(auth, googleProvider);
             navigate("/");
         } catch (err) {
-            setError(err.message);
+            if (err.code === "auth/popup-closed-by-user") {
+                setError("Popup closed before completing sign in.");
+            } else if (err.code === "auth/popup-blocked") {
+                setError("Popup was blocked. Please allow popups and try again.");
+            } else {
+                setError("Google sign-in failed. Please try again.");
+            }
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="auth-wrapper">

@@ -3,18 +3,22 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useTheme } from '../context/ThemeContext';
 
 import './Navbar.css';
 import logo from '../assets/logo.svg';
 import profileIcon from '../assets/icons/profile.svg';
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
     const location = useLocation();
     const isHome = location.pathname === '/';
+    const navigate = useNavigate();
 
     const { user } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { setTheme } = useTheme();
 
     const profileRef = useRef(null);
     const mobileMenuRef = useRef(null);
@@ -24,9 +28,13 @@ function Navbar() {
 
     const handleLogout = async () => {
         await signOut(auth);
+        setTheme("light");
+        localStorage.setItem("theme", "light");
         setDropdownOpen(false);
         closeMenu();
+        navigate("/");
     };
+
 
     // Close menus when clicking outside
     useEffect(() => {

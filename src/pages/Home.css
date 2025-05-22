@@ -37,8 +37,8 @@ html, body {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 2.5rem;
-    color: var(--text); /* was white */
 }
+
 
 .hero-subtext {
     font-size: 1.5rem;
@@ -119,32 +119,34 @@ html, body {
     }
 }
 
+.learn-more-btn {
+    border: 2px solid #a582f7; /* Light mode blue */
+    border-radius: 30px;
+    padding: 1.1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--btn-text);
+    background-color: transparent;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.dark .learn-more-btn {
+    border-color: #fff; /* White in dark mode */
+}
+
+.learn-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 8px currentColor;
+}
+
 /* === Gradient Text Style === */
 .gradient-text {
     background: linear-gradient(90deg, #5a8fff, #a259ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
-}
-
-/* === Gradient Border Button (for Learn More) === */
-.gradient-border-btn {
-    border: 2px solid transparent;
-    background: linear-gradient(to right, transparent, transparent) padding-box,
-    linear-gradient(90deg, #5ac8fa, #a259ff) border-box;
-    color: var(--text);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    border-radius: 30px;
-    padding: 1.1rem 2.5rem;
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-}
-
-
-
-.gradient-border-btn:hover {
-    transform: translateY(-2px);
+    color: transparent; /* required fallback */
 }
