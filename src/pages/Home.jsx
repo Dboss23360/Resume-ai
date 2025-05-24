@@ -1,6 +1,11 @@
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import './Home.css';
-import { Link } from 'react-router-dom';
+
+import resumeIcon from '../assets/icons/home-resume-icon.svg';
+import uploadIcon from '../assets/icons/home-upload-icon.svg';
+import chatIcon from '../assets/icons/home-chat-icon.svg';
+import searchIcon from '../assets/icons/home-search-icon.svg';
 
 function Home() {
     return (
@@ -29,6 +34,43 @@ function Home() {
                     <Link to="/learn" className="hero-btn learn-more-btn">Learn More</Link>
                 </div>
             </main>
+
+            <section className="home-icons-section">
+                <h2 className="icon-header">How it works</h2>
+                <div className="icon-grid">
+                    <div className="icon-item">
+                        <img src={resumeIcon} alt="Create Resume Icon" />
+                        <div className="icon-text">
+                            <h3>Create Your Resume</h3>
+                            <p>Use our builder to craft a standout resume in minutes.</p>
+                        </div>
+                    </div>
+
+                    <div className="icon-item">
+                        <img src={uploadIcon} alt="Upload Resume Icon" />
+                        <div className="icon-text">
+                            <h3>Upload Existing</h3>
+                            <p>Already have one? Upload and improve it instantly.</p>
+                        </div>
+                    </div>
+
+                    <div className="icon-item">
+                        <img src={chatIcon} alt="AI Assistant Icon" />
+                        <div className="icon-text">
+                            <h3>Get AI Advice</h3>
+                            <p>Chat with our AI to refine your resume and job pitch.</p>
+                        </div>
+                    </div>
+
+                    <div className="icon-item">
+                        <img src={searchIcon} alt="Search Jobs Icon" />
+                        <div className="icon-text">
+                            <h3>Find Jobs</h3>
+                            <p>Explore listings tailored to your skills and goals.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

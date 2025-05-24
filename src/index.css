@@ -2,42 +2,43 @@
 /*   Global + Theme    */
 /* =================== */
 
-/* System font smoothing + defaults */
 :root {
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 400;
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* === LIGHT MODE DEFAULT === */
-  --bg-flat: #faf9ff; /* fallback flat color */
+  /* === LIGHT MODE === */
+  --bg-flat: #faf9ff;
   --bg: linear-gradient(to bottom, #faf9ff 0%, #f6f4ff 35%, #f2f1ff 100%);
   --text: #1a1a1a;
   --link: #5a2bc9;
-  --link-hover: #341d91;
+  --link-hover: #3e1fa3;
   --btn-bg: white;
   --btn-fill: #fefcff;
   --btn-text: #111;
-  --btn-hover-bg: #eee;
-  --btn-border: #111111;
-  --input-bg: #ffffff;
+  --btn-hover-bg: #efecff;
+  --btn-border: #222;
+  --input-bg: #fff;
+  --input-border: #ccc;
+  --input-focus: #a582f7;
   color-scheme: light;
 }
 
-/* DARK MODE OVERRIDES */
 body.dark {
-  --bg: linear-gradient(90deg, #0A0A0A 0%, #0A0A0A 28%, #130C2A 45%, #2B1A5F 70%, #3A2A80 100%);
+  --bg: linear-gradient(90deg, #0a0a0a 0%, #0a0a0a 28%, #130c2a 45%, #2b1a5f 70%, #3a2a80 100%);
   --text: rgba(255, 255, 255, 0.87);
   --link: #a582f7;
   --link-hover: #d4c0ff;
   --btn-bg: #1a1a1a;
-  --btn-text: white;
+  --btn-text: #fff;
   --btn-hover-bg: rgba(165, 130, 247, 0.08);
   --btn-border: #a582f7;
   --input-bg: #1e1e2f;
+  --input-border: #444;
+  --input-focus: #a582f7;
   color-scheme: dark;
 }
 
@@ -66,27 +67,39 @@ html, body {
   width: 100%;
   height: 100%;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* =================== */
 /*   Typography        */
 /* =================== */
 
+body {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
 a {
   font-weight: 500;
   color: var(--link);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
   color: var(--link-hover);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  font-weight: 800;
+h1, h2, h3, h4, h5, h6 {
   color: var(--text);
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 /* =================== */
@@ -96,14 +109,14 @@ h1 {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  padding: 0.6em 1.25em;
+  font-size: 1rem;
   font-weight: 600;
   font-family: inherit;
-  background-color: transparent;
+  background-color: var(--btn-bg);
   color: var(--btn-text);
   cursor: pointer;
-  transition: border-color 0.25s, background-color 0.25s;
+  transition: all 0.25s ease;
 }
 
 button:hover {
@@ -115,4 +128,29 @@ button:focus,
 button:focus-visible {
   outline: 3px solid var(--btn-border);
   outline-offset: 2px;
+}
+
+/* =================== */
+/*   Inputs + Forms    */
+/* =================== */
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.65em 1em;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text);
+  transition: border-color 0.25s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 2px rgba(165, 130, 247, 0.2);
 }
