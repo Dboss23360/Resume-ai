@@ -54,7 +54,7 @@ function Navbar() {
                 {/* Hamburger */}
                 <button
                     onClick={toggleMenu}
-                    className="md:hidden text-white ml-auto mr-4 p-2"
+                    className="md:hidden text-white ml-auto mr-7 p-2"
                     style={{
                         background: 'transparent',
                         border: 'none',
