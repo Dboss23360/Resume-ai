@@ -103,7 +103,7 @@ function Navbar() {
                 {menuOpen && (
                     <div className="absolute top-full left-0 w-full bg-neutral-900 shadow-md rounded-lg mt-2 py-4 flex flex-col gap-y-3 text-white md:hidden">
                         <Link to="/" onClick={closeMenu} className="px-4">Home</Link>
-                        <Link to="/build" onClick={closeMenu} className="px-4">Build Resum</Link>
+                        <Link to="/build" onClick={closeMenu} className="px-4">Build Resume</Link>
                         <Link to="/upload" onClick={closeMenu} className="px-4">Refine Resume</Link>
                         <Link to="/chat" onClick={closeMenu} className="px-4">AI Assistant</Link>
                         <Link to="/jobs" onClick={closeMenu} className="px-4">Job Board</Link>
