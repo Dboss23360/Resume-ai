@@ -270,3 +270,10 @@ body.dark .learn-more-btn {
         font-size: 2rem;
     }
 }
+
+nav a {
+    color: white !important;
+}
+nav a:hover {
+    color: #d8b4fe !important; /* soft purple on hover */
+}
