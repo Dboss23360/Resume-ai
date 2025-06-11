@@ -12,17 +12,19 @@ import ScrollToTop from "./components/ScrollToTop";
 function App() {
     return (
         <Router>
-            <ScrollToTop />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/build" element={<BuildResume />} />
-                <Route path="/refine" element={<RefineResume />} />
-                <Route path="/chat" element={<Chat />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/account" element={<AccountSettings />} />
-                <Route path="/forgot" element={<Forgot />} /> {}
-            </Routes>
+            <div style={{ backgroundColor: '#1a1a1a', color: '#ffffff', minHeight: '100vh' }}>
+                <ScrollToTop />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/build" element={<BuildResume />} />
+                    <Route path="/refine" element={<RefineResume />} />
+                    <Route path="/chat" element={<Chat />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/account" element={<AccountSettings />} />
+                    <Route path="/forgot" element={<Forgot />} />
+                </Routes>
+            </div>
         </Router>
     );
 }

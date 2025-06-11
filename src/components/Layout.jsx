@@ -13,7 +13,7 @@ function Layout({ children, fullScreen = false }) {
     return (
         <div
             style={{
-                height: '100vh',
+                minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
                 background,

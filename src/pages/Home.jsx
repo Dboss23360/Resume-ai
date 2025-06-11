@@ -3,25 +3,30 @@ import './Home.css';
 
 import heroIllustration from '../assets/illustrations/hero-laptop.svg';
 import resumeMan from '../assets/illustrations/resume-man.svg';
+import waveLines from '../assets/illustrations/lines.svg'; // Decorative SVG lines
 
 function Home() {
     return (
-        <div>
+        <div style={{ backgroundColor: 'var(--bg)', color: 'var(--text)', position: 'relative', overflow: 'hidden' }}>
             <Navbar />
 
             {/* Hero Section */}
             <main className="hero-container">
                 <div className="hero-text">
-                    <h2 className="hero-tagline">Build Resumes. Land Jobs. The Easy Way.</h2>
                     <h1 className="hero-title">
-                        From <span className="gradient-text">Send</span><br />
-                        to <span className="gradient-text">You’re Hired</span>
+                        From <span className="gradient-text">Send</span> to <span className="gradient-text">You’re Hired</span>
                     </h1>
                     <p className="hero-subtext">
-                        Build the perfect resume, explore job and internship openings,
-                        and land the opportunity that fits you best.
+                        Build the perfect resume, explore job and internship openings, and land the opportunity that fits you best.
                     </p>
 
+                    <div className="wave-background">
+                        <img
+                            src={waveLines}
+                            alt="Decorative wave background"
+                            className="wave-fullscreen"
+                        />
+                    </div>
                     <div className="hero-buttons">
                         <button className="hero-btn">Build New Resume</button>
                         <button className="hero-btn">Upload Resume</button>
@@ -30,6 +35,7 @@ function Home() {
                         <button className="hero-btn learn-more-btn">Learn More</button>
                     </div>
                 </div>
+
                 <div className="hero-illustration">
                     <img src={heroIllustration} alt="Woman at laptop illustration" />
                 </div>
