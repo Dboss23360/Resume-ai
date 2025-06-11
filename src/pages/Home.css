@@ -277,3 +277,12 @@ nav a {
 nav a:hover {
     color: #d8b4fe !important; /* soft purple on hover */
 }
+
+nav a,
+nav a:visited {
+    color: white !important;
+}
+
+nav a:hover {
+    color: #d8b4fe !important;
+}
